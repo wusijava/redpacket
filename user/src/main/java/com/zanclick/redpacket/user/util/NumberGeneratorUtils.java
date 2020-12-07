@@ -87,14 +87,11 @@ public class NumberGeneratorUtils extends org.apache.commons.lang.StringUtils {
     /**
      * 获取订单号
      */
-    public static String generator(DataRoles roles) {
+  /*  public static String generator(DataRoles roles) {
         String defaultRoleCode = null;
         switch (roles){
-            case MERCHANT:
+            case USER:
                 defaultRoleCode = generatorMerchantNo();
-                break;
-            case SERVICE:
-                defaultRoleCode = generatorAgentNo();
                 break;
             case ADMIN:
                 defaultRoleCode = generatorUserNo();
@@ -103,7 +100,7 @@ public class NumberGeneratorUtils extends org.apache.commons.lang.StringUtils {
                 break;
         }
         return defaultRoleCode;
-    }
+    }*/
 
     /**
      * 创建指定位数的随机数

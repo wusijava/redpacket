@@ -5,8 +5,7 @@ import java.util.Map;
 
 public enum DataRoles {
     ADMIN("100","管理员"),
-    SERVICE("200","代理角色"),
-    MERCHANT("201","地推角色");
+    USER("201","用户");
 
     private String code;
 
@@ -37,8 +36,7 @@ public enum DataRoles {
 
     static {
         DATA_ROLE.put(ADMIN.getCode(),ADMIN.getDesc());
-        DATA_ROLE.put(SERVICE.getCode(),SERVICE.getDesc());
-        DATA_ROLE.put(MERCHANT.getCode(),MERCHANT.getDesc());
+        DATA_ROLE.put(USER.getCode(),USER.getDesc());
     }
 
 
