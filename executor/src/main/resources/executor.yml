@@ -1,0 +1,13 @@
+
+
+
+zcpay:
+  task:
+    executor:
+      executors:
+        notify:
+          corePoolSize: 2
+          maxPoolSize: 5
+          queueCapacity: 10
+          keepAliveSeconds: 300
+          rejectedHandler: java.util.concurrent.ThreadPoolExecutor.AbortPolicy

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zanclick.redpacket.user.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.user.entity.Role">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="data_role_code" property="dataRoleCode" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="parent_code" property="parentCode" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="area_type" property="areaType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="table">role</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `uid`,
+            `name`,
+            `phone`,
+            `data_role_code`,
+            `code`,
+            `parent_code`,
+            `role_name`,
+            `state`,
+            `create_time`,
+            `area_type`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                <if test="id != null">
+                    AND `id`=#{id}
+                </if>
+                <if test="uid != null and uid != ''">
+                    AND `uid`=#{uid}
+                </if>
+                <if test="name != null and name != ''">
+                    AND `name`=#{name}
+                </if>
+                <if test="phone != null and phone != ''">
+                    AND `phone`=#{phone}
+                </if>
+                <if test="dataRoleCode != null and dataRoleCode != ''">
+                    AND `data_role_code`=#{dataRoleCode}
+                </if>
+                <if test="code != null and code != ''">
+                    AND `code`=#{code}
+                </if>
+                <if test="parentCode != null and parentCode != ''">
+                    AND `parent_code`=#{parentCode}
+                </if>
+                <if test="roleName != null and roleName != ''">
+                    AND `role_name`=#{roleName}
+                </if>
+                <if test="state != null">
+                    AND `state`=#{state}
+                </if>
+                <if test="createTime != null">
+                    AND `create_time`=#{createTime}
+                </if>
+                <if test="areaType != null and areaType != ''">
+                    AND `area_type`=#{areaType}
+                </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.zanclick.redpacket.user.entity.Role" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+        `id`,
+        `uid`,
+        `name`,
+        `phone`,
+        `data_role_code`,
+        `code`,
+        `parent_code`,
+        `role_name`,
+        `state`,
+        `create_time`,
+        `area_type`
+        )
+        VALUES(
+        #{id},
+        #{uid},
+        #{name},
+        #{phone},
+        #{dataRoleCode},
+        #{code},
+        #{parentCode},
+        #{roleName},
+        #{state},
+        #{createTime},
+        #{areaType}
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+        `id`,
+        `uid`,
+        `name`,
+        `phone`,
+        `data_role_code`,
+        `code`,
+        `parent_code`,
+        `role_name`,
+        `state`,
+        `create_time`,
+        `area_type`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.uid},
+            #{cm.name},
+            #{cm.phone},
+            #{cm.dataRoleCode},
+            #{cm.code},
+            #{cm.parentCode},
+            #{cm.roleName},
+            #{cm.state},
+            #{cm.createTime},
+            #{cm.areaType}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateById" parameterType="com.zanclick.redpacket.user.entity.Role">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="uid != null and uid != ''">
+                `uid`=#{uid},
+            </if>
+            <if test="name != null and name != ''">
+                `name`=#{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                `phone`=#{phone},
+            </if>
+            <if test="dataRoleCode != null and dataRoleCode != ''">
+                `data_role_code`=#{dataRoleCode},
+            </if>
+            <if test="code != null and code != ''">
+                `code`=#{code},
+            </if>
+            <if test="parentCode != null and parentCode != ''">
+                `parent_code`=#{parentCode},
+            </if>
+            <if test="roleName != null and roleName != ''">
+                `role_name`=#{roleName},
+            </if>
+            <if test="state != null">
+                `state`=#{state},
+            </if>
+            <if test="createTime != null">
+                `create_time`=#{createTime},
+            </if>
+            <if test="areaType != null and areaType != ''">
+                `area_type`=#{areaType},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,91 @@
+spring:
+  datasource:
+    username: developer
+    password: Dev2020_
+    url: jdbc:mysql://172.16.4.201:3306/ali_risk?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      web-stat-filter:
+        enabled: true
+        url-pattern: '/*'
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+        session-stat-enable: true
+      stat-view-servlet:
+        url-pattern: '/druid/*'
+        reset-enable: false
+        login-username: root
+        login-password: root
+        enabled: true
+      filter:
+        stat:
+          slow-sql-millis: 5000
+  session:
+    store-type: REDIS #recommend JDBC(easy) or REDIS(high performance) see StoreType.java
+    redis:
+      namespace: api-sessions
+  redis:
+    host: 172.16.4.201
+    port: 6379
+    password: tuchuan2017
+    timeout: 3000ms
+    database: 6
+    lettuce:
+      pool:
+        max-wait: 2000ms
+        min-idle: 50
+        max-idle: 100
+        max-active: 200
+
+activemq: #MQ消息中间件
+  broker-url: failover:(tcp://121.196.57.4:31616)
+  user: admin
+  password: duchong5262
+  enabled: true
+  max-connections: 50
+  expiry-timeout: 10000
+  idle-timeout: 30000
+
+
+zcpay:
+  task:
+    executor:
+      executors:
+        notify:
+          corePoolSize: 2
+          maxPoolSize: 5
+          queueCapacity: 10
+          keepAliveSeconds: 300
+          rejectedHandler: java.util.concurrent.ThreadPoolExecutor.AbortPolicy
+        yyf:
+          corePoolSize: 2
+          maxPoolSize: 5
+          queueCapacity: 10
+          keepAliveSeconds: 300
+          rejectedHandler: java.util.concurrent.ThreadPoolExecutor.AbortPolicy
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#导出文件保存路径
+serverPath: D:\\excel\\
+
+#excelOrZipUrl: http://172.16.4.110:8888/web/v1/file/downloadExcel/
+excelOrZipUrl: http://dzrisk.ngrok.zanclick.cn/web/v1/file/downloadExcel/
+
+
+
+

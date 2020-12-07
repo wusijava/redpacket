@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zanclick.redpacket.configuration.mapper.AppMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.configuration.entity.App">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="pid" property="pid" jdbcType="VARCHAR"/>
+            <result column="smid" property="smid" jdbcType="VARCHAR"/>
+            <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="private_key" property="privateKey" jdbcType="VARCHAR"/>
+            <result column="public_key" property="publicKey" jdbcType="VARCHAR"/>
+            <result column="app_public_key" property="appPublicKey" jdbcType="VARCHAR"/>
+            <result column="app_private_key" property="appPrivateKey" jdbcType="VARCHAR"/>
+            <result column="check_sign" property="checkSign" jdbcType="INTEGER"/>
+            <result column="ip_control" property="ipControl" jdbcType="INTEGER"/>
+            <result column="push_risk_url" property="pushRiskUrl" jdbcType="VARCHAR"/>
+            <result column="push_represen_url" property="pushRepresenUrl" jdbcType="VARCHAR"/>
+            <result column="merchant_query_url" property="merchantQueryUrl" jdbcType="VARCHAR"/>
+            <result column="transaction_query_url" property="transactionQueryUrl" jdbcType="VARCHAR"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="table">app</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `pid`,
+            `smid`,
+            `app_id`,
+            `state`,
+            `name`,
+            `private_key`,
+            `public_key`,
+            `app_public_key`,
+            `app_private_key`,
+            `check_sign`,
+            `ip_control`,
+            `push_risk_url`,
+            `push_represen_url`,
+            `merchant_query_url`,
+            `transaction_query_url`,
+            `create_time`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                    <if test="id != null">
+                        AND `id`=#{id}
+                    </if>
+                    <if test="pid != null and pid != ''">
+                        AND `pid`=#{pid}
+                    </if>
+                    <if test="smid != null and smid != ''">
+                        AND `smid`=#{smid}
+                    </if>
+                    <if test="appId != null and appId != ''">
+                        AND `app_id`=#{appId}
+                    </if>
+                    <if test="state != null">
+                        AND `state`=#{state}
+                    </if>
+                    <if test="name != null and name != ''">
+                        AND `name`=#{name}
+                    </if>
+                    <if test="privateKey != null and privateKey != ''">
+                        AND `private_key`=#{privateKey}
+                    </if>
+                    <if test="publicKey != null and publicKey != ''">
+                        AND `public_key`=#{publicKey}
+                    </if>
+                    <if test="appPublicKey != null and appPublicKey != ''">
+                        AND `app_public_key`=#{appPublicKey}
+                    </if>
+                    <if test="appPrivateKey != null and appPrivateKey != ''">
+                        AND `app_private_key`=#{appPrivateKey}
+                    </if>
+                    <if test="checkSign != null">
+                        AND `check_sign`=#{checkSign}
+                    </if>
+                    <if test="ipControl != null">
+                        AND `ip_control`=#{ipControl}
+                    </if>
+                    <if test="pushRiskUrl != null and pushRiskUrl != ''">
+                        AND `push_risk_url`=#{pushRiskUrl}
+                    </if>
+                    <if test="pushRepresenUrl != null and pushRepresenUrl != ''">
+                        AND `push_represen_url`=#{pushRepresenUrl}
+                    </if>
+                    <if test="merchantQueryUrl != null and merchantQueryUrl != ''">
+                        AND `merchant_query_url`=#{merchantQueryUrl}
+                    </if>
+                    <if test="transactionQueryUrl != null and transactionQueryUrl != ''">
+                        AND `transaction_query_url`=#{transactionQueryUrl}
+                    </if>
+                    <if test="createTime != null">
+                        AND `create_time`=#{createTime}
+                    </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.zanclick.redpacket.configuration.entity.App" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `pid`,
+            `smid`,
+            `app_id`,
+            `state`,
+            `name`,
+            `private_key`,
+            `public_key`,
+            `app_public_key`,
+            `app_private_key`,
+            `check_sign`,
+            `ip_control`,
+            `push_risk_url`,
+            `push_represen_url`,
+            `merchant_query_url`,
+            `transaction_query_url`,
+            `create_time`
+        )
+        VALUES(
+            #{id},
+            #{pid},
+            #{smid},
+            #{appId},
+            #{state},
+            #{name},
+            #{privateKey},
+            #{publicKey},
+            #{appPublicKey},
+            #{appPrivateKey},
+            #{checkSign},
+            #{ipControl},
+            #{pushRiskUrl},
+            #{pushRepresenUrl},
+            #{merchantQueryUrl},
+            #{transactionQueryUrl},
+            #{createTime}
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `pid`,
+            `smid`,
+            `app_id`,
+            `state`,
+            `name`,
+            `private_key`,
+            `public_key`,
+            `app_public_key`,
+            `app_private_key`,
+            `check_sign`,
+            `ip_control`,
+            `push_risk_url`,
+            `push_represen_url`,
+            `merchant_query_url`,
+            `transaction_query_url`,
+            `create_time`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.pid},
+            #{cm.smid},
+            #{cm.appId},
+            #{cm.state},
+            #{cm.name},
+            #{cm.privateKey},
+            #{cm.publicKey},
+            #{cm.appPublicKey},
+            #{cm.appPrivateKey},
+            #{cm.checkSign},
+            #{cm.ipControl},
+            #{cm.pushRiskUrl},
+            #{cm.pushRepresenUrl},
+            #{cm.merchantQueryUrl},
+            #{cm.transactionQueryUrl},
+            #{cm.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+    <select id="queryByAppId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE app_id=#{appId}
+    </select>
+
+    <update id="updateById" parameterType="com.zanclick.redpacket.configuration.entity.App">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="pid != null and pid != ''">
+                 `pid`=#{pid},
+            </if>
+            <if test="smid != null and smid != ''">
+                 `smid`=#{smid},
+            </if>
+            <if test="appId != null and appId != ''">
+                 `app_id`=#{appId},
+            </if>
+            <if test="state != null">
+                 `state`=#{state},
+            </if>
+            <if test="name != null and name != ''">
+                 `name`=#{name},
+            </if>
+            <if test="privateKey != null and privateKey != ''">
+                 `private_key`=#{privateKey},
+            </if>
+            <if test="publicKey != null and publicKey != ''">
+                 `public_key`=#{publicKey},
+            </if>
+            <if test="appPublicKey != null and appPublicKey != ''">
+                 `app_public_key`=#{appPublicKey},
+            </if>
+            <if test="appPrivateKey != null and appPrivateKey != ''">
+                 `app_private_key`=#{appPrivateKey},
+            </if>
+            <if test="checkSign != null">
+                 `check_sign`=#{checkSign},
+            </if>
+            <if test="ipControl != null">
+                 `ip_control`=#{ipControl},
+            </if>
+            <if test="pushRiskUrl != null and pushRiskUrl != ''">
+                 `push_risk_url`=#{pushRiskUrl},
+            </if>
+            <if test="pushRepresenUrl != null and pushRepresenUrl != ''">
+                 `push_represen_url`=#{pushRepresenUrl},
+            </if>
+            <if test="merchantQueryUrl != null and merchantQueryUrl != ''">
+                 `merchant_query_url`=#{merchantQueryUrl},
+            </if>
+            <if test="transactionQueryUrl != null and transactionQueryUrl != ''">
+                 `transaction_query_url`=#{transactionQueryUrl},
+            </if>
+            <if test="createTime != null">
+                 `create_time`=#{createTime},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>

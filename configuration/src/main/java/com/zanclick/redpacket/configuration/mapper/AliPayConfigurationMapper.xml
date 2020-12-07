@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zanclick.redpacket.configuration.mapper.AliPayConfigurationMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.configuration.entity.AliPayConfiguration">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+        <result column="gate_way" property="gateWay" jdbcType="VARCHAR"/>
+        <result column="private_key" property="privateKey" jdbcType="VARCHAR"/>
+        <result column="public_key" property="publicKey" jdbcType="VARCHAR"/>
+        <result column="format" property="format" jdbcType="VARCHAR"/>
+        <result column="charset" property="charset" jdbcType="VARCHAR"/>
+        <result column="sign_type" property="signType" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="table">ali_pay_configuration</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `app_id`,
+            `gate_way`,
+            `private_key`,
+            `public_key`,
+            `format`,
+            `charset`,
+            `sign_type`,
+            `state`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                <if test="id != null">
+                    AND `id`=#{id}
+                </if>
+                <if test="appId != null and appId != ''">
+                    AND `app_id`=#{appId}
+                </if>
+                <if test="gateWay != null and gateWay != ''">
+                    AND `gate_way`=#{gateWay}
+                </if>
+                <if test="privateKey != null and privateKey != ''">
+                    AND `private_key`=#{privateKey}
+                </if>
+                <if test="publicKey != null and publicKey != ''">
+                    AND `public_key`=#{publicKey}
+                </if>
+                <if test="format != null and format != ''">
+                    AND `format`=#{format}
+                </if>
+                <if test="charset != null and charset != ''">
+                    AND `charset`=#{charset}
+                </if>
+                <if test="signType != null and signType != ''">
+                    AND `sign_type`=#{signType}
+                </if>
+                <if test="state != null">
+                    AND `state`=#{state}
+                </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.zanclick.redpacket.configuration.entity.AliPayConfiguration"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+        `id`,
+        `app_id`,
+        `gate_way`,
+        `private_key`,
+        `public_key`,
+        `format`,
+        `charset`,
+        `sign_type`,
+        `state`
+        )
+        VALUES(
+        #{id},
+        #{appId},
+        #{gateWay},
+        #{privateKey},
+        #{publicKey},
+        #{format},
+        #{charset},
+        #{signType},
+        #{state}
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+        `id`,
+        `app_id`,
+        `gate_way`,
+        `private_key`,
+        `public_key`,
+        `format`,
+        `charset`,
+        `sign_type`,
+        `state`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.appId},
+            #{cm.gateWay},
+            #{cm.privateKey},
+            #{cm.publicKey},
+            #{cm.format},
+            #{cm.charset},
+            #{cm.signType},
+            #{cm.state}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+
+    <select id="queryByAppId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        where app_id = #{appId}
+    </select>
+
+    <select id="selectLastOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        where state = 1
+        limit 1
+    </select>
+
+    <update id="updateById" parameterType="com.zanclick.redpacket.configuration.entity.AliPayConfiguration">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="appId != null and appId != ''">
+                `app_id`=#{appId},
+            </if>
+            <if test="gateWay != null and gateWay != ''">
+                `gate_way`=#{gateWay},
+            </if>
+            <if test="privateKey != null and privateKey != ''">
+                `private_key`=#{privateKey},
+            </if>
+            <if test="publicKey != null and publicKey != ''">
+                `public_key`=#{publicKey},
+            </if>
+            <if test="format != null and format != ''">
+                `format`=#{format},
+            </if>
+            <if test="charset != null and charset != ''">
+                `charset`=#{charset},
+            </if>
+            <if test="signType != null and signType != ''">
+                `sign_type`=#{signType},
+            </if>
+            <if test="state != null">
+                `state`=#{state},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>
