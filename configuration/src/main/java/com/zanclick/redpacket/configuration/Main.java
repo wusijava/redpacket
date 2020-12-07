@@ -15,9 +15,9 @@ public class Main {
     public static void main(String[] args) {
         String basePack = Main.class.getPackage().getName();
         CodeGenerator codeGenerator = new CodeGenerator();
-        codeGenerator.generateMybatisXml(basePack, App.class);
-        codeGenerator.generateDao(basePack, App.class);
-        codeGenerator.generateService(basePack, App.class);
+        codeGenerator.generateMybatisXml(basePack, AliPayConfiguration.class);
+        codeGenerator.generateDao(basePack, AliPayConfiguration.class);
+        codeGenerator.generateService(basePack, AliPayConfiguration.class);
 //        codeGenerator.generateCreateSqlForPackage(basePack);
     }
 }

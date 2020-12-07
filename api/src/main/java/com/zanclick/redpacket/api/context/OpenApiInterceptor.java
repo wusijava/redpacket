@@ -44,14 +44,11 @@ public class OpenApiInterceptor implements HandlerInterceptor {
         if (ipControlService == null){
             ipControlService = ApplicationContextHelper.getBean(IpControlService.class);
         }
-        //App app = appService.queryByAppId(commonRequest.getApp_id());
-        App a=new App();
-        a.setId(5L);
+        App app = appService.queryByAppId(commonRequest.getApp_id());
+
 
         List<IpControl> ipControls = ipControlService.queryByAppId("TEST202005041652231204911");
 
-
-        App app=appService.queryByAppId("TEST202005041652231204911");
         if (app == null || app.getState().equals(App.State.CLOSED.getCode())){
             throw new BaseException(ApiErrorEnum.INVALID_PUBLIC_PARAM,"app_id无效");
         }

@@ -11,6 +11,7 @@
         <module>executor</module>
         <module>api</module>
         <module>sdk</module>
+        <module>core</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

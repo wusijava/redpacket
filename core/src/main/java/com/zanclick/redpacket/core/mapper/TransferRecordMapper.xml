@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zanclick.redpacket.core.mapper.TransferRecordMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.core.entity.TransferRecord">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+            <result column="amount" property="amount" jdbcType="VARCHAR"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
+            <result column="receive_no" property="receiveNo" jdbcType="VARCHAR"/>
+            <result column="type" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="table">transfer_record</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `user_name`,
+            `amount`,
+            `create_time`,
+            `trade_no`,
+            `receive_no`,
+            `type`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                    <if test="id != null">
+                        AND `id`=#{id}
+                    </if>
+                    <if test="userName != null and userName != ''">
+                        AND `user_name`=#{userName}
+                    </if>
+                    <if test="amount != null and amount != ''">
+                        AND `amount`=#{amount}
+                    </if>
+                    <if test="createTime != null">
+                        AND `create_time`=#{createTime}
+                    </if>
+                    <if test="tradeNo != null and tradeNo != ''">
+                        AND `trade_no`=#{tradeNo}
+                    </if>
+                    <if test="receiveNo != null and receiveNo != ''">
+                        AND `receive_no`=#{receiveNo}
+                    </if>
+                    <if test="type != null and type != ''">
+                        AND `type`=#{type}
+                    </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.zanclick.redpacket.core.entity.TransferRecord" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `user_name`,
+            `amount`,
+            `create_time`,
+            `trade_no`,
+            `receive_no`,
+            `type`
+        )
+        VALUES(
+            #{id},
+            #{userName},
+            #{amount},
+            #{createTime},
+            #{tradeNo},
+            #{receiveNo},
+            #{type}
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `user_name`,
+            `amount`,
+            `create_time`,
+            `trade_no`,
+            `receive_no`,
+            `type`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.userName},
+            #{cm.amount},
+            #{cm.createTime},
+            #{cm.tradeNo},
+            #{cm.receiveNo},
+            #{cm.type}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.TransferRecord">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="userName != null and userName != ''">
+                 `user_name`=#{userName},
+            </if>
+            <if test="amount != null and amount != ''">
+                 `amount`=#{amount},
+            </if>
+            <if test="createTime != null">
+                 `create_time`=#{createTime},
+            </if>
+            <if test="tradeNo != null and tradeNo != ''">
+                 `trade_no`=#{tradeNo},
+            </if>
+            <if test="receiveNo != null and receiveNo != ''">
+                 `receive_no`=#{receiveNo},
+            </if>
+            <if test="type != null and type != ''">
+                 `type`=#{type},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>

@@ -5,8 +5,8 @@ import com.zanclick.redpacket.user.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author long5
- * @date 2020-11-28 19:45:15
+ * @author wusi
+ * @date 2020-12-07 14:39:16
  **/
 @Mapper
 public interface RoleMapper extends BaseMapper<Role,Long> {

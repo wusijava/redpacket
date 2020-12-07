@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
  * @author long5
  * @date 2020-11-28 19:42:09
  **/
-@OpenApiService
-@Service
+
+
 public interface UserService extends BaseService<User,Long> {
 
     User findByUsername(String username);
 
     @OpenApi(api = ApiMethod.RISK_MERCHANT_CHECK)
-    void test();
+    void test(User user);
 
 
 

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zanclick.redpacket.core.mapper.RedPacketRecordMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.core.entity.RedPacketRecord">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="amount" property="amount" jdbcType="VARCHAR"/>
+            <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
+            <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+            <result column="title" property="title" jdbcType="VARCHAR"/>
+            <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
+            <result column="type" property="type" jdbcType="INTEGER"/>
+            <result column="merchant_no" property="merchantNo" jdbcType="VARCHAR"/>
+            <result column="cashier_phone_no" property="cashierPhoneNo" jdbcType="VARCHAR"/>
+            <result column="seller_no" property="sellerNo" jdbcType="VARCHAR"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="pay_no" property="payNo" jdbcType="VARCHAR"/>
+            <result column="receive_name" property="receiveName" jdbcType="VARCHAR"/>
+            <result column="receive_no" property="receiveNo" jdbcType="VARCHAR"/>
+            <result column="ali_user_id" property="aliUserId" jdbcType="VARCHAR"/>
+            <result column="reason" property="reason" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="table">red_packet_record</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `amount`,
+            `trade_no`,
+            `out_trade_no`,
+            `title`,
+            `app_id`,
+            `state`,
+            `type`,
+            `merchant_no`,
+            `cashier_phone_no`,
+            `seller_no`,
+            `create_time`,
+            `pay_no`,
+            `receive_name`,
+            `receive_no`,
+            `ali_user_id`,
+            `reason`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                    <if test="id != null">
+                        AND `id`=#{id}
+                    </if>
+                    <if test="amount != null and amount != ''">
+                        AND `amount`=#{amount}
+                    </if>
+                    <if test="tradeNo != null and tradeNo != ''">
+                        AND `trade_no`=#{tradeNo}
+                    </if>
+                    <if test="outTradeNo != null and outTradeNo != ''">
+                        AND `out_trade_no`=#{outTradeNo}
+                    </if>
+                    <if test="title != null and title != ''">
+                        AND `title`=#{title}
+                    </if>
+                    <if test="appId != null and appId != ''">
+                        AND `app_id`=#{appId}
+                    </if>
+                    <if test="state != null">
+                        AND `state`=#{state}
+                    </if>
+                    <if test="type != null">
+                        AND `type`=#{type}
+                    </if>
+                    <if test="merchantNo != null and merchantNo != ''">
+                        AND `merchant_no`=#{merchantNo}
+                    </if>
+                    <if test="cashierPhoneNo != null and cashierPhoneNo != ''">
+                        AND `cashier_phone_no`=#{cashierPhoneNo}
+                    </if>
+                    <if test="sellerNo != null and sellerNo != ''">
+                        AND `seller_no`=#{sellerNo}
+                    </if>
+                    <if test="createTime != null">
+                        AND `create_time`=#{createTime}
+                    </if>
+                    <if test="payNo != null and payNo != ''">
+                        AND `pay_no`=#{payNo}
+                    </if>
+                    <if test="receiveName != null and receiveName != ''">
+                        AND `receive_name`=#{receiveName}
+                    </if>
+                    <if test="receiveNo != null and receiveNo != ''">
+                        AND `receive_no`=#{receiveNo}
+                    </if>
+                    <if test="aliUserId != null and aliUserId != ''">
+                        AND `ali_user_id`=#{aliUserId}
+                    </if>
+                    <if test="reason != null and reason != ''">
+                        AND `reason`=#{reason}
+                    </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.zanclick.redpacket.core.entity.RedPacketRecord" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `amount`,
+            `trade_no`,
+            `out_trade_no`,
+            `title`,
+            `app_id`,
+            `state`,
+            `type`,
+            `merchant_no`,
+            `cashier_phone_no`,
+            `seller_no`,
+            `create_time`,
+            `pay_no`,
+            `receive_name`,
+            `receive_no`,
+            `ali_user_id`,
+            `reason`
+        )
+        VALUES(
+            #{id},
+            #{amount},
+            #{tradeNo},
+            #{outTradeNo},
+            #{title},
+            #{appId},
+            #{state},
+            #{type},
+            #{merchantNo},
+            #{cashierPhoneNo},
+            #{sellerNo},
+            #{createTime},
+            #{payNo},
+            #{receiveName},
+            #{receiveNo},
+            #{aliUserId},
+            #{reason}
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `amount`,
+            `trade_no`,
+            `out_trade_no`,
+            `title`,
+            `app_id`,
+            `state`,
+            `type`,
+            `merchant_no`,
+            `cashier_phone_no`,
+            `seller_no`,
+            `create_time`,
+            `pay_no`,
+            `receive_name`,
+            `receive_no`,
+            `ali_user_id`,
+            `reason`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.amount},
+            #{cm.tradeNo},
+            #{cm.outTradeNo},
+            #{cm.title},
+            #{cm.appId},
+            #{cm.state},
+            #{cm.type},
+            #{cm.merchantNo},
+            #{cm.cashierPhoneNo},
+            #{cm.sellerNo},
+            #{cm.createTime},
+            #{cm.payNo},
+            #{cm.receiveName},
+            #{cm.receiveNo},
+            #{cm.aliUserId},
+            #{cm.reason}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.RedPacketRecord">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="amount != null and amount != ''">
+                 `amount`=#{amount},
+            </if>
+            <if test="tradeNo != null and tradeNo != ''">
+                 `trade_no`=#{tradeNo},
+            </if>
+            <if test="outTradeNo != null and outTradeNo != ''">
+                 `out_trade_no`=#{outTradeNo},
+            </if>
+            <if test="title != null and title != ''">
+                 `title`=#{title},
+            </if>
+            <if test="appId != null and appId != ''">
+                 `app_id`=#{appId},
+            </if>
+            <if test="state != null">
+                 `state`=#{state},
+            </if>
+            <if test="type != null">
+                 `type`=#{type},
+            </if>
+            <if test="merchantNo != null and merchantNo != ''">
+                 `merchant_no`=#{merchantNo},
+            </if>
+            <if test="cashierPhoneNo != null and cashierPhoneNo != ''">
+                 `cashier_phone_no`=#{cashierPhoneNo},
+            </if>
+            <if test="sellerNo != null and sellerNo != ''">
+                 `seller_no`=#{sellerNo},
+            </if>
+            <if test="createTime != null">
+                 `create_time`=#{createTime},
+            </if>
+            <if test="payNo != null and payNo != ''">
+                 `pay_no`=#{payNo},
+            </if>
+            <if test="receiveName != null and receiveName != ''">
+                 `receive_name`=#{receiveName},
+            </if>
+            <if test="receiveNo != null and receiveNo != ''">
+                 `receive_no`=#{receiveNo},
+            </if>
+            <if test="aliUserId != null and aliUserId != ''">
+                 `ali_user_id`=#{aliUserId},
+            </if>
+            <if test="reason != null and reason != ''">
+                 `reason`=#{reason},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>

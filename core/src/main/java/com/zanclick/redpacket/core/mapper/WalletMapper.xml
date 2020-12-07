@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zanclick.redpacket.user.mapper.RoleMapper">
-    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.user.entity.Role">
+<mapper namespace="com.zanclick.redpacket.core.mapper.WalletMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.core.entity.Wallet">
             <id column="id" property="id" jdbcType="BIGINT"/>
-            <result column="uid" property="uid" jdbcType="VARCHAR"/>
-            <result column="name" property="name" jdbcType="VARCHAR"/>
-            <result column="phone" property="phone" jdbcType="VARCHAR"/>
-            <result column="data_role_code" property="dataRoleCode" jdbcType="VARCHAR"/>
-            <result column="code" property="code" jdbcType="VARCHAR"/>
-            <result column="parent_code" property="parentCode" jdbcType="VARCHAR"/>
-            <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+            <result column="total_amount" property="totalAmount" jdbcType="VARCHAR"/>
+            <result column="can_withdraw_amount" property="canWithdrawAmount" jdbcType="VARCHAR"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="table">role</sql>
+    <sql id="table">wallet</sql>
     <sql id="Base_Column_List">
             `id`,
-            `uid`,
-            `name`,
-            `phone`,
-            `data_role_code`,
-            `code`,
-            `parent_code`,
-            `role_name`,
+            `user_name`,
+            `total_amount`,
+            `can_withdraw_amount`,
             `state`,
             `create_time`
     </sql>
@@ -33,26 +25,14 @@
                     <if test="id != null">
                         AND `id`=#{id}
                     </if>
-                    <if test="uid != null and uid != ''">
-                        AND `uid`=#{uid}
+                    <if test="userName != null and userName != ''">
+                        AND `user_name`=#{userName}
                     </if>
-                    <if test="name != null and name != ''">
-                        AND `name`=#{name}
+                    <if test="totalAmount != null and totalAmount != ''">
+                        AND `total_amount`=#{totalAmount}
                     </if>
-                    <if test="phone != null and phone != ''">
-                        AND `phone`=#{phone}
-                    </if>
-                    <if test="dataRoleCode != null and dataRoleCode != ''">
-                        AND `data_role_code`=#{dataRoleCode}
-                    </if>
-                    <if test="code != null and code != ''">
-                        AND `code`=#{code}
-                    </if>
-                    <if test="parentCode != null and parentCode != ''">
-                        AND `parent_code`=#{parentCode}
-                    </if>
-                    <if test="roleName != null and roleName != ''">
-                        AND `role_name`=#{roleName}
+                    <if test="canWithdrawAmount != null and canWithdrawAmount != ''">
+                        AND `can_withdraw_amount`=#{canWithdrawAmount}
                     </if>
                     <if test="state != null">
                         AND `state`=#{state}
@@ -96,31 +76,23 @@
         <include refid="table"/>
     </select>
 
-    <insert id="insert" parameterType="com.zanclick.redpacket.user.entity.Role" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.zanclick.redpacket.core.entity.Wallet" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO
         <include refid="table"/>
         (
             `id`,
-            `uid`,
-            `name`,
-            `phone`,
-            `data_role_code`,
-            `code`,
-            `parent_code`,
-            `role_name`,
+            `user_name`,
+            `total_amount`,
+            `can_withdraw_amount`,
             `state`,
             `create_time`
         )
         VALUES(
             #{id},
-            #{uid},
-            #{name},
-            #{phone},
-            #{dataRoleCode},
-            #{code},
-            #{parentCode},
-            #{roleName},
+            #{userName},
+            #{totalAmount},
+            #{canWithdrawAmount},
             #{state},
             #{createTime}
         )
@@ -131,13 +103,9 @@
         <include refid="table"/>
         (
             `id`,
-            `uid`,
-            `name`,
-            `phone`,
-            `data_role_code`,
-            `code`,
-            `parent_code`,
-            `role_name`,
+            `user_name`,
+            `total_amount`,
+            `can_withdraw_amount`,
             `state`,
             `create_time`
         )
@@ -145,13 +113,9 @@
         <foreach collection="list" item="cm" index="index" separator=",">
             (
             #{cm.id},
-            #{cm.uid},
-            #{cm.name},
-            #{cm.phone},
-            #{cm.dataRoleCode},
-            #{cm.code},
-            #{cm.parentCode},
-            #{cm.roleName},
+            #{cm.userName},
+            #{cm.totalAmount},
+            #{cm.canWithdrawAmount},
             #{cm.state},
             #{cm.createTime}
             )
@@ -166,30 +130,18 @@
         WHERE id=#{id}
     </select>
 
-    <update id="updateById" parameterType="com.zanclick.redpacket.user.entity.Role">
+    <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.Wallet">
         UPDATE
         <include refid="table"/>
         <set>
-            <if test="uid != null and uid != ''">
-                 `uid`=#{uid},
+            <if test="userName != null and userName != ''">
+                 `user_name`=#{userName},
             </if>
-            <if test="name != null and name != ''">
-                 `name`=#{name},
+            <if test="totalAmount != null and totalAmount != ''">
+                 `total_amount`=#{totalAmount},
             </if>
-            <if test="phone != null and phone != ''">
-                 `phone`=#{phone},
-            </if>
-            <if test="dataRoleCode != null and dataRoleCode != ''">
-                 `data_role_code`=#{dataRoleCode},
-            </if>
-            <if test="code != null and code != ''">
-                 `code`=#{code},
-            </if>
-            <if test="parentCode != null and parentCode != ''">
-                 `parent_code`=#{parentCode},
-            </if>
-            <if test="roleName != null and roleName != ''">
-                 `role_name`=#{roleName},
+            <if test="canWithdrawAmount != null and canWithdrawAmount != ''">
+                 `can_withdraw_amount`=#{canWithdrawAmount},
             </if>
             <if test="state != null">
                  `state`=#{state},

@@ -47,10 +47,7 @@ public class Role implements Identifiable<Long> {
 
     private Date createTime;
 
-    /**
-     *所属大区
-     * */
-    private String areaType;
+
 
     public enum State implements BaseEnum<Integer> {
         /**
