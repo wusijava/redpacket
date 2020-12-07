@@ -32,6 +32,7 @@ import java.util.Date;
 public class H5LoginController {
     @Autowired
     private UserService userService;
+
     @ApiOperation(value = "登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "登录账号", required = true, dataType = "String", paramType = "form"),
@@ -54,15 +55,15 @@ public class H5LoginController {
         if (DataUtils.isEmpty(userName) || DataUtils.isEmpty(password) || DataUtils.isEmpty(passwordConfirm)) {
             return Response.fail("注册信息不完整!");
         }
-        if(!password.trim().equals(passwordConfirm.trim())){
+        if (!password.trim().equals(passwordConfirm.trim())) {
             return Response.fail("两次密码不一致,请重新输入!");
         }
         User byUsername = userService.findByUsername(userName);
-        if(!DataUtils.isEmpty(byUsername)){
+        if (!DataUtils.isEmpty(byUsername)) {
             return Response.fail("用户名已存在!");
         }
         String salt = PassWordUtil.generateSalt();
-        User user=new User();
+        User user = new User();
         user.setCreateTime(new Date());
         user.setUsername(userName);
         user.setUid(NumberGeneratorUtils.generatorUid());
@@ -73,7 +74,7 @@ public class H5LoginController {
         try {
             userService.insert(user);
         } catch (Exception e) {
-            log.error("注册失败,{},{}", userName,password);
+            log.error("注册失败,{},{}", userName, password);
         }
         return Response.ok("注册成功!");
     }

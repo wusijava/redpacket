@@ -54,6 +54,10 @@ public class RedPacket implements Identifiable<Long> {
    */
   private String sellerNo;
   /**
+   * 顾客手机号
+   */
+  private String customPhone;
+  /**
    * 创建时间
    */
   private Date createTime;
