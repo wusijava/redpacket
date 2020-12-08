@@ -2,6 +2,7 @@ package com.zanclick.redpacket.user.entity;
 
 import com.zanclick.redpacket.common.enums.BaseEnum;
 import com.zanclick.redpacket.common.model.Identifiable;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.util.Date;
@@ -33,6 +34,37 @@ public class User implements Identifiable<Long> {
     private String defaultRoleCode;
 
     private String salt;
+
+    private Integer type;
+
+    private String roleTypes;
+
+    public enum Type {
+        /**
+         * 管理员
+         */
+        ADMIN(0);
+        private Integer code;
+
+        Type(Integer code) {
+            this.code = code;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+    }
+
+    public String getTypeDesc(){
+        if (User.Type.ADMIN.getCode().equals(type)){
+            return "管理员";
+        }
+        return  null;
+    }
 
     public enum State implements BaseEnum<Integer> {
         /**

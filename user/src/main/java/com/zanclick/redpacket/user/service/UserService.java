@@ -19,10 +19,5 @@ public interface UserService extends BaseService<User,Long> {
 
     User findByUsername(String username);
 
-    @OpenApi(api = ApiMethod.RISK_MERCHANT_CHECK)
-    void test(User user);
-
-
-
-
+    String changePassword(Long userId, String salt, String password, String oldPassword, String newPassword);
 }

@@ -1,15 +1,15 @@
 package com.zanclick.redpacket.user.mapper;
 
 import com.zanclick.redpacket.common.base.dao.mybatis.BaseMapper;
-import com.zanclick.redpacket.user.entity.Role;
+import com.zanclick.redpacket.user.entity.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author 27720
- * @date 2020-12-07 17:56:10
+ * @date 2020-12-08 10:58:08
  **/
 @Mapper
-public interface RoleMapper extends BaseMapper<Role,Long> {
+public interface UserRoleMapper extends BaseMapper<UserRole,Long> {
 
 
 }

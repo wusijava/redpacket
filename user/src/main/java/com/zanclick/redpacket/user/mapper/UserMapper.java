@@ -14,4 +14,6 @@ public interface UserMapper extends BaseMapper<User,Long> {
 
     User findByUsername(String username);
 
+
+    String findPassword(Long id);
 }

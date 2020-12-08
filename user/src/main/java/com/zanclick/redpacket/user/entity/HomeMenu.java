@@ -3,32 +3,36 @@ package com.zanclick.redpacket.user.entity;
 import com.zanclick.redpacket.common.model.Identifiable;
 import lombok.Data;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author duchong
- * @description 权限
- * @date 2019-8-3 10:05:37
+ * @description 主菜单
+ * @date 2019-11-13 14:31:25
  */
 @Data
-public class Role implements Identifiable<Long> {
+public class HomeMenu implements Identifiable<Long> {
 
     private Long id;
 
-    private Integer type;
+    private String title;
 
     private String name;
 
-    /**
-     * 备注
-     */
-    private String remark;
-    /**
-     * 冻结 0冻 1未冻
-     */
-    private  Integer state;
+    private String icon;
+
+    private String code;
+
+    private Date createTime;
+
+    private List<Menu> submenus;
+
+    private Integer state;
 
     public enum State {
-        open(1, "未冻结"),
-        close(0, "已冻结");
+        open(1, "开启的"),
+        close(0, "关闭的");
 
         private Integer code;
         private String desc;
@@ -54,13 +58,4 @@ public class Role implements Identifiable<Long> {
             this.desc = desc;
         }
     }
-
-    public String getStateDesc(){
-        if (State.close.getCode().equals(state)){
-            return  State.close.getDesc();
-        }else {
-            return  State.open.getDesc();
-        }
-    }
-
 }

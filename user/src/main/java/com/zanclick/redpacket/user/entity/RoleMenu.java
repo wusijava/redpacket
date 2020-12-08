@@ -9,26 +9,21 @@ import lombok.Data;
  * @date 2019-8-3 10:05:37
  */
 @Data
-public class Role implements Identifiable<Long> {
+public class RoleMenu implements Identifiable<Long> {
 
     private Long id;
 
     private Integer type;
 
-    private String name;
+    private String homeMenuCode;
 
-    /**
-     * 备注
-     */
-    private String remark;
-    /**
-     * 冻结 0冻 1未冻
-     */
-    private  Integer state;
+    private String menuCode;
+
+    private Integer state;
 
     public enum State {
-        open(1, "未冻结"),
-        close(0, "已冻结");
+        open(1, "开启"),
+        close(0, "冻结");
 
         private Integer code;
         private String desc;
@@ -52,14 +47,6 @@ public class Role implements Identifiable<Long> {
 
         public void setDesc(String desc) {
             this.desc = desc;
-        }
-    }
-
-    public String getStateDesc(){
-        if (State.close.getCode().equals(state)){
-            return  State.close.getDesc();
-        }else {
-            return  State.open.getDesc();
         }
     }
 

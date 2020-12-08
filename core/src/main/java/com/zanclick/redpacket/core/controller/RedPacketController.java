@@ -3,13 +3,24 @@ package com.zanclick.redpacket.core.controller;
 import com.zanclick.redpacket.common.entity.Response;
 import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.core.entity.RedPacket;
+import com.zanclick.redpacket.core.query.RedPacketQuery;
 import com.zanclick.redpacket.core.service.RedPacketService;
+import com.zanclick.redpacket.core.vo.RedPacketVo;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ Description   :  红包controller
@@ -46,6 +57,6 @@ public class RedPacketController {
             return Response.ok(false);
         }
         return Response.ok(true);
-
     }
+
 }

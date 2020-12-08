@@ -89,7 +89,7 @@ public class AuthFilterAbstract extends AbstractJwtAuthenticationFilter {
 
     @Override
     protected Boolean isLoginUrl(HttpServletRequest request) {
-        return pathMatcher.match("/h5/login", request.getServletPath()) || pathMatcher.match("/h5/sms/login", request.getServletPath()) || pathMatcher.match("/web/login", request.getServletPath());
+        return pathMatcher.match("/h5/login", request.getServletPath()) || pathMatcher.match("/h5/sms/login", request.getServletPath()) || pathMatcher.match("/web/user/login", request.getServletPath());
     }
 
     @Override

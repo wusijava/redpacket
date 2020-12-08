@@ -15,6 +15,14 @@
             <result column="seller_no" property="sellerNo" jdbcType="VARCHAR"/>
             <result column="custom_phone" property="customPhone" jdbcType="VARCHAR"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="order_time" property="orderTime" jdbcType="VARCHAR"/>
+            <result column="delay_days" property="delayDays" jdbcType="INTEGER"/>
+            <result column="is_next_month_settle" property="isNextMonthSettle" jdbcType="INTEGER"/>
+            <result column="collect_account_number" property="collectAccountNumber" jdbcType="VARCHAR"/>
+            <result column="account_no" property="accountNo" jdbcType="VARCHAR"/>
+            <result column="province_name" property="provinceName" jdbcType="VARCHAR"/>
+            <result column="cashier_no" property="cashierNo" jdbcType="VARCHAR"/>
+            <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="table">red_packet</sql>
@@ -31,7 +39,15 @@
             `cashier_phone_no`,
             `seller_no`,
             `custom_phone`,
-            `create_time`
+            `create_time`,
+            `order_time`,
+            `delay_days`,
+            `is_next_month_settle`,
+            `collect_account_number`,
+            `account_no`,
+            `province_name`,
+            `cashier_no`,
+            `trading_time`
     </sql>
     <sql id="Base_Where_Clause">
         <where>
@@ -74,6 +90,30 @@
                     </if>
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
+                    </if>
+                    <if test="orderTime != null and orderTime != ''">
+                        AND `order_time`=#{orderTime}
+                    </if>
+                    <if test="delayDays != null">
+                        AND `delay_days`=#{delayDays}
+                    </if>
+                    <if test="isNextMonthSettle != null">
+                        AND `is_next_month_settle`=#{isNextMonthSettle}
+                    </if>
+                    <if test="collectAccountNumber != null and collectAccountNumber != ''">
+                        AND `collect_account_number`=#{collectAccountNumber}
+                    </if>
+                    <if test="accountNo != null and accountNo != ''">
+                        AND `account_no`=#{accountNo}
+                    </if>
+                    <if test="provinceName != null and provinceName != ''">
+                        AND `province_name`=#{provinceName}
+                    </if>
+                    <if test="cashierNo != null and cashierNo != ''">
+                        AND `cashier_no`=#{cashierNo}
+                    </if>
+                    <if test="tradingTime != null">
+                        AND `trading_time`=#{tradingTime}
                     </if>
             </trim>
         </where>
@@ -128,7 +168,15 @@
             `cashier_phone_no`,
             `seller_no`,
             `custom_phone`,
-            `create_time`
+            `create_time`,
+            `order_time`,
+            `delay_days`,
+            `is_next_month_settle`,
+            `collect_account_number`,
+            `account_no`,
+            `province_name`,
+            `cashier_no`,
+            `trading_time`
         )
         VALUES(
             #{id},
@@ -143,7 +191,15 @@
             #{cashierPhoneNo},
             #{sellerNo},
             #{customPhone},
-            #{createTime}
+            #{createTime},
+            #{orderTime},
+            #{delayDays},
+            #{isNextMonthSettle},
+            #{collectAccountNumber},
+            #{accountNo},
+            #{provinceName},
+            #{cashierNo},
+            #{tradingTime}
         )
     </insert>
 
@@ -163,7 +219,15 @@
             `cashier_phone_no`,
             `seller_no`,
             `custom_phone`,
-            `create_time`
+            `create_time`,
+            `order_time`,
+            `delay_days`,
+            `is_next_month_settle`,
+            `collect_account_number`,
+            `account_no`,
+            `province_name`,
+            `cashier_no`,
+            `trading_time`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
@@ -180,7 +244,15 @@
             #{cm.cashierPhoneNo},
             #{cm.sellerNo},
             #{cm.customPhone},
-            #{cm.createTime}
+            #{cm.createTime},
+            #{cm.orderTime},
+            #{cm.delayDays},
+            #{cm.isNextMonthSettle},
+            #{cm.collectAccountNumber},
+            #{cm.accountNo},
+            #{cm.provinceName},
+            #{cm.cashierNo},
+            #{cm.tradingTime}
             )
         </foreach>
     </insert>
@@ -233,6 +305,30 @@
             <if test="createTime != null">
                  `create_time`=#{createTime},
             </if>
+            <if test="orderTime != null and orderTime != ''">
+                 `order_time`=#{orderTime},
+            </if>
+            <if test="delayDays != null">
+                 `delay_days`=#{delayDays},
+            </if>
+            <if test="isNextMonthSettle != null">
+                 `is_next_month_settle`=#{isNextMonthSettle},
+            </if>
+            <if test="collectAccountNumber != null and collectAccountNumber != ''">
+                 `collect_account_number`=#{collectAccountNumber},
+            </if>
+            <if test="accountNo != null and accountNo != ''">
+                 `account_no`=#{accountNo},
+            </if>
+            <if test="provinceName != null and provinceName != ''">
+                 `province_name`=#{provinceName},
+            </if>
+            <if test="cashierNo != null and cashierNo != ''">
+                 `cashier_no`=#{cashierNo},
+            </if>
+            <if test="tradingTime != null">
+                 `trading_time`=#{tradingTime},
+            </if>
         </set>
         WHERE id=#{id}
     </update>
@@ -243,4 +339,71 @@
         <include refid="table"/>
         WHERE id=#{id}
     </delete>
+
+    <sql id="Base_Where_Clause_sumAmount">
+        <where>
+            <trim prefixOverrides="and">
+                <if test="id != null">
+                    AND `id`=#{id}
+                </if>
+                <if test="amount != null and amount != ''">
+                    AND `amount`=#{amount}
+                </if>
+                <if test="tradeNo != null and tradeNo != ''">
+                    AND `trade_no`=#{tradeNo}
+                </if>
+                <if test="outTradeNo != null and outTradeNo != ''">
+                    AND `out_trade_no`=#{outTradeNo}
+                </if>
+                <if test="title != null and title != ''">
+                    AND `title`=#{title}
+                </if>
+                <if test="appId != null and appId != ''">
+                    AND `app_id`=#{appId}
+                </if>
+                <if test="state != null">
+                    AND `state`=#{state}
+                </if>
+                <if test="type != null">
+                    AND `type`=#{type}
+                </if>
+                <if test="merchantNo != null and merchantNo != ''">
+                    AND `merchant_no`=#{merchantNo}
+                </if>
+                <if test="cashierPhoneNo != null and cashierPhoneNo != ''">
+                    AND `cashier_phone_no`=#{cashierPhoneNo}
+                </if>
+                <if test="sellerNo != null and sellerNo != ''">
+                    AND `seller_no`=#{sellerNo}
+                </if>
+                <if test="customPhone != null and customPhone != ''">
+                    AND `custom_phone`=#{customPhone}
+                </if>
+                <if test="createTime != null">
+                    AND `create_time`=#{createTime}
+                </if>
+                <if test="startTime != null">
+                    and create_time &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s')
+                </if>
+                <if test="endTime != null">
+                    and create_time &lt;= DATE_SUB( DATE_ADD(#{endTime}, INTERVAL 1 DAY),INTERVAL 1 SECOND)
+                </if>
+            </trim>
+        </where>
+        ORDER BY id DESC
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <select id="selectSunAmount" resultType="java.lang.String" parameterType="com.zanclick.redpacket.core.entity.RedPacket">
+        SELECT
+        round(sum(amount),2)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause_sumAmount"/>
+    </select>
 </mapper>
