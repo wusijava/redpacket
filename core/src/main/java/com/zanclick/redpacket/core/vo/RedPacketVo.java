@@ -60,7 +60,7 @@ public class RedPacketVo {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
 
     private String orderTime;
@@ -90,6 +90,6 @@ public class RedPacketVo {
 
     private String stateDesc;
 
-    private Date tradingTime;
+    private String tradingTime;
 
 }

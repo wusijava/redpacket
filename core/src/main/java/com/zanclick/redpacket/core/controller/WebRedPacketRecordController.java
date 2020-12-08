@@ -2,6 +2,7 @@ package com.zanclick.redpacket.core.controller;
 
 import com.zanclick.redpacket.common.entity.Response;
 import com.zanclick.redpacket.common.utils.DataUtils;
+import com.zanclick.redpacket.common.utils.DateUtils;
 import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.entity.RedPacketRecord;
 import com.zanclick.redpacket.core.query.RedPacketQuery;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "api/web/redPacketRecord")
+@RequestMapping(value = "/api/web/redPacketRecord")
 public class WebRedPacketRecordController {
     @Autowired
     private RedPacketRecordService redPacketRecordService;
@@ -65,6 +66,8 @@ public class WebRedPacketRecordController {
 
     private RedPacketRecordVo getListVo(RedPacketRecord redPacketRecord) {
         RedPacketRecordVo vo = new RedPacketRecordVo();
+        vo.setCustomPhone(redPacketRecord.getCustomPhone());
+        vo.setStateDesc(redPacketRecord.getStateDesc());
         vo.setAmount(redPacketRecord.getAmount());
         vo.setTradeNo(redPacketRecord.getTradeNo());
         vo.setOutTradeNo(redPacketRecord.getOutTradeNo());
@@ -74,13 +77,20 @@ public class WebRedPacketRecordController {
         vo.setType(redPacketRecord.getType());
         vo.setMerchantNo(redPacketRecord.getMerchantNo());
         vo.setSellerNo(redPacketRecord.getSellerNo());
-        vo.setCreateTime(redPacketRecord.getCreateTime());
+        vo.setCreateTime(DateUtils.formatDate(redPacketRecord.getCreateTime(), DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS));
         vo.setPayNo(redPacketRecord.getPayNo());
-        vo.setReceiveName(redPacketRecord.getReceiveName());
         vo.setReceiveName(redPacketRecord.getReceiveName());
         vo.setReceiveNo(redPacketRecord.getReceiveNo());
         vo.setAliUserId(redPacketRecord.getAliUserId());
         vo.setReason(redPacketRecord.getReason());
+        vo.setCollectAccountNumber(redPacketRecord.getCollectAccountNumber());
+        vo.setAccountNo(redPacketRecord.getAccountNo());
+        vo.setProvinceCode(redPacketRecord.getProvinceCode());
+        vo.setProvinceName(redPacketRecord.getProvinceName());
+        vo.setCashierPhoneNo(redPacketRecord.getCashierPhoneNo());
+        vo.setCashierNo(redPacketRecord.getCashierNo());
+        vo.setTradingTime(redPacketRecord.getTradingTime());
+        vo.setPacketNo(redPacketRecord.getPacketNo());
         return vo;
 
     }

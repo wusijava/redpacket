@@ -2,23 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zanclick.redpacket.core.mapper.RedPacketRecordMapper">
     <resultMap id="BaseResultMap" type="com.zanclick.redpacket.core.entity.RedPacketRecord">
-            <id column="id" property="id" jdbcType="BIGINT"/>
-            <result column="amount" property="amount" jdbcType="VARCHAR"/>
-            <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
-            <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
-            <result column="title" property="title" jdbcType="VARCHAR"/>
-            <result column="app_id" property="appId" jdbcType="VARCHAR"/>
-            <result column="state" property="state" jdbcType="INTEGER"/>
-            <result column="type" property="type" jdbcType="INTEGER"/>
-            <result column="merchant_no" property="merchantNo" jdbcType="VARCHAR"/>
-            <result column="cashier_phone_no" property="cashierPhoneNo" jdbcType="VARCHAR"/>
-            <result column="seller_no" property="sellerNo" jdbcType="VARCHAR"/>
-            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-            <result column="pay_no" property="payNo" jdbcType="VARCHAR"/>
-            <result column="receive_name" property="receiveName" jdbcType="VARCHAR"/>
-            <result column="receive_no" property="receiveNo" jdbcType="VARCHAR"/>
-            <result column="ali_user_id" property="aliUserId" jdbcType="VARCHAR"/>
-            <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="amount" property="amount" jdbcType="VARCHAR"/>
+        <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
+        <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="merchant_no" property="merchantNo" jdbcType="VARCHAR"/>
+        <result column="cashier_phone_no" property="cashierPhoneNo" jdbcType="VARCHAR"/>
+        <result column="seller_no" property="sellerNo" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="pay_no" property="payNo" jdbcType="VARCHAR"/>
+        <result column="receive_name" property="receiveName" jdbcType="VARCHAR"/>
+        <result column="receive_no" property="receiveNo" jdbcType="VARCHAR"/>
+        <result column="ali_user_id" property="aliUserId" jdbcType="VARCHAR"/>
+        <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="collect_account_number" property="collectAccountNumber" jdbcType="VARCHAR"/>
+        <result column="account_no" property="accountNo" jdbcType="VARCHAR"/>
+        <result column="province_name" property="provinceName" jdbcType="VARCHAR"/>
+        <result column="cashier_no" property="cashierNo" jdbcType="VARCHAR"/>
+        <result column="province_code" property="provinceCode" jdbcType="VARCHAR"/>
+        <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP"/>
+        <result column="custom_phone" property="customPhone" jdbcType="VARCHAR"/>
+        <result column="packet_no" property="packetNo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="table">red_packet_record</sql>
@@ -39,62 +47,100 @@
             `receive_name`,
             `receive_no`,
             `ali_user_id`,
-            `reason`
+            `reason`,
+            `collect_account_number`,
+            `account_no`,
+            `province_name`,
+            `cashier_no`,
+            `province_code`,
+            `trading_time`,
+            `custom_phone`,
+            `packet_no`
     </sql>
     <sql id="Base_Where_Clause">
         <where>
             <trim prefixOverrides="and">
-                    <if test="id != null">
-                        AND `id`=#{id}
-                    </if>
-                    <if test="amount != null and amount != ''">
-                        AND `amount`=#{amount}
-                    </if>
-                    <if test="tradeNo != null and tradeNo != ''">
-                        AND `trade_no`=#{tradeNo}
-                    </if>
-                    <if test="outTradeNo != null and outTradeNo != ''">
-                        AND `out_trade_no`=#{outTradeNo}
-                    </if>
-                    <if test="title != null and title != ''">
-                        AND `title`=#{title}
-                    </if>
-                    <if test="appId != null and appId != ''">
-                        AND `app_id`=#{appId}
-                    </if>
-                    <if test="state != null">
-                        AND `state`=#{state}
-                    </if>
-                    <if test="type != null">
-                        AND `type`=#{type}
-                    </if>
-                    <if test="merchantNo != null and merchantNo != ''">
-                        AND `merchant_no`=#{merchantNo}
-                    </if>
-                    <if test="cashierPhoneNo != null and cashierPhoneNo != ''">
-                        AND `cashier_phone_no`=#{cashierPhoneNo}
-                    </if>
-                    <if test="sellerNo != null and sellerNo != ''">
-                        AND `seller_no`=#{sellerNo}
-                    </if>
-                    <if test="createTime != null">
-                        AND `create_time`=#{createTime}
-                    </if>
-                    <if test="payNo != null and payNo != ''">
-                        AND `pay_no`=#{payNo}
-                    </if>
-                    <if test="receiveName != null and receiveName != ''">
-                        AND `receive_name`=#{receiveName}
-                    </if>
-                    <if test="receiveNo != null and receiveNo != ''">
-                        AND `receive_no`=#{receiveNo}
-                    </if>
-                    <if test="aliUserId != null and aliUserId != ''">
-                        AND `ali_user_id`=#{aliUserId}
-                    </if>
-                    <if test="reason != null and reason != ''">
-                        AND `reason`=#{reason}
-                    </if>
+                <if test="id != null">
+                    AND `id`=#{id}
+                </if>
+                <if test="amount != null and amount != ''">
+                    AND `amount`=#{amount}
+                </if>
+                <if test="tradeNo != null and tradeNo != ''">
+                    AND `trade_no`=#{tradeNo}
+                </if>
+                <if test="outTradeNo != null and outTradeNo != ''">
+                    AND `out_trade_no`=#{outTradeNo}
+                </if>
+                <if test="title != null and title != ''">
+                    AND `title`=#{title}
+                </if>
+                <if test="appId != null and appId != ''">
+                    AND `app_id`=#{appId}
+                </if>
+                <if test="state != null">
+                    AND `state`=#{state}
+                </if>
+                <if test="type != null">
+                    AND `type`=#{type}
+                </if>
+                <if test="merchantNo != null and merchantNo != ''">
+                    AND `merchant_no`=#{merchantNo}
+                </if>
+                <if test="cashierPhoneNo != null and cashierPhoneNo != ''">
+                    AND `cashier_phone_no`=#{cashierPhoneNo}
+                </if>
+                <if test="sellerNo != null and sellerNo != ''">
+                    AND `seller_no`=#{sellerNo}
+                </if>
+                <if test="createTime != null">
+                    AND `create_time`=#{createTime}
+                </if>
+                <if test="payNo != null and payNo != ''">
+                    AND `pay_no`=#{payNo}
+                </if>
+                <if test="receiveName != null and receiveName != ''">
+                    AND `receive_name`=#{receiveName}
+                </if>
+                <if test="receiveNo != null and receiveNo != ''">
+                    AND `receive_no`=#{receiveNo}
+                </if>
+                <if test="aliUserId != null and aliUserId != ''">
+                    AND `ali_user_id`=#{aliUserId}
+                </if>
+                <if test="reason != null and reason != ''">
+                    AND `reason`=#{reason}
+                </if>
+                <if test="collectAccountNumber != null and collectAccountNumber != ''">
+                    AND `collect_account_number`=#{collectAccountNumber}
+                </if>
+                <if test="accountNo != null and accountNo != ''">
+                    AND `account_no`=#{accountNo}
+                </if>
+                <if test="provinceName != null and provinceName != ''">
+                    AND `province_name`=#{provinceName}
+                </if>
+                <if test="cashierNo != null and cashierNo != ''">
+                    AND `cashier_no`=#{cashierNo}
+                </if>
+                <if test="provinceCode != null and provinceCode != ''">
+                    AND `province_code`=#{provinceCode}
+                </if>
+                <if test="tradingTime != null">
+                    AND `trading_time`=#{tradingTime}
+                </if>
+                <if test="customPhone != null and customPhone != ''">
+                    AND `custom_phone`=#{customPhone}
+                </if>
+                <if test="packetNo != null and packetNo != ''">
+                    AND `packet_no`=#{packetNo}
+                </if>
+                <if test="startTime != null">
+                    and create_time &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s')
+                </if>
+                <if test="endTime != null">
+                    and create_time &lt;= DATE_SUB( DATE_ADD(#{endTime}, INTERVAL 1 DAY),INTERVAL 1 SECOND)
+                </if>
             </trim>
         </where>
         ORDER BY id DESC
@@ -136,42 +182,58 @@
         INSERT INTO
         <include refid="table"/>
         (
-            `id`,
-            `amount`,
-            `trade_no`,
-            `out_trade_no`,
-            `title`,
-            `app_id`,
-            `state`,
-            `type`,
-            `merchant_no`,
-            `cashier_phone_no`,
-            `seller_no`,
-            `create_time`,
-            `pay_no`,
-            `receive_name`,
-            `receive_no`,
-            `ali_user_id`,
-            `reason`
+        `id`,
+        `amount`,
+        `trade_no`,
+        `out_trade_no`,
+        `title`,
+        `app_id`,
+        `state`,
+        `type`,
+        `merchant_no`,
+        `cashier_phone_no`,
+        `seller_no`,
+        `create_time`,
+        `pay_no`,
+        `receive_name`,
+        `receive_no`,
+        `ali_user_id`,
+        `reason`,
+        `collect_account_number`,
+        `account_no`,
+        `province_name`,
+        `cashier_no`,
+        `province_code`,
+        `trading_time`,
+        `custom_phone`,
+        `packet_no`
         )
         VALUES(
-            #{id},
-            #{amount},
-            #{tradeNo},
-            #{outTradeNo},
-            #{title},
-            #{appId},
-            #{state},
-            #{type},
-            #{merchantNo},
-            #{cashierPhoneNo},
-            #{sellerNo},
-            #{createTime},
-            #{payNo},
-            #{receiveName},
-            #{receiveNo},
-            #{aliUserId},
-            #{reason}
+        #{id},
+        #{amount},
+        #{tradeNo},
+        #{outTradeNo},
+        #{title},
+        #{appId},
+        #{state},
+        #{type},
+        #{merchantNo},
+        #{cashierPhoneNo},
+        #{sellerNo},
+        #{createTime},
+        #{payNo},
+        #{receiveName},
+        #{receiveNo},
+        #{aliUserId},
+        #{reason},
+        #{collectAccountNumber},
+        #{accountNo},
+        #{provinceName},
+        #{cashierNo},
+        #{provinceCode},
+        #{tradingTime},
+        #{customPhone},
+        #{packetNo}
         )
     </insert>
 
@@ -179,23 +241,31 @@
         INSERT INTO
         <include refid="table"/>
         (
-            `id`,
-            `amount`,
-            `trade_no`,
-            `out_trade_no`,
-            `title`,
-            `app_id`,
-            `state`,
-            `type`,
-            `merchant_no`,
-            `cashier_phone_no`,
-            `seller_no`,
-            `create_time`,
-            `pay_no`,
-            `receive_name`,
-            `receive_no`,
-            `ali_user_id`,
-            `reason`
+        `id`,
+        `amount`,
+        `trade_no`,
+        `out_trade_no`,
+        `title`,
+        `app_id`,
+        `state`,
+        `type`,
+        `merchant_no`,
+        `cashier_phone_no`,
+        `seller_no`,
+        `create_time`,
+        `pay_no`,
+        `receive_name`,
+        `receive_no`,
+        `ali_user_id`,
+        `reason`,
+        `collect_account_number`,
+        `account_no`,
+        `province_name`,
+        `cashier_no`,
+        `province_code`,
+        `trading_time`,
+        `custom_phone`,
+        `packet_no`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
@@ -216,7 +286,15 @@
             #{cm.receiveName},
             #{cm.receiveNo},
             #{cm.aliUserId},
-            #{cm.reason}
+            #{cm.reason},
+            #{cm.collectAccountNumber},
+            #{cm.accountNo},
+            #{cm.provinceName},
+            #{cm.cashierNo},
+            #{cm.provinceCode},
+            #{cm.tradingTime},
+            #{cm.customPhone},
+            #{cm.packetNo}
             )
         </foreach>
     </insert>
@@ -234,52 +312,76 @@
         <include refid="table"/>
         <set>
             <if test="amount != null and amount != ''">
-                 `amount`=#{amount},
+                `amount`=#{amount},
             </if>
             <if test="tradeNo != null and tradeNo != ''">
-                 `trade_no`=#{tradeNo},
+                `trade_no`=#{tradeNo},
             </if>
             <if test="outTradeNo != null and outTradeNo != ''">
-                 `out_trade_no`=#{outTradeNo},
+                `out_trade_no`=#{outTradeNo},
             </if>
             <if test="title != null and title != ''">
-                 `title`=#{title},
+                `title`=#{title},
             </if>
             <if test="appId != null and appId != ''">
-                 `app_id`=#{appId},
+                `app_id`=#{appId},
             </if>
             <if test="state != null">
-                 `state`=#{state},
+                `state`=#{state},
             </if>
             <if test="type != null">
-                 `type`=#{type},
+                `type`=#{type},
             </if>
             <if test="merchantNo != null and merchantNo != ''">
-                 `merchant_no`=#{merchantNo},
+                `merchant_no`=#{merchantNo},
             </if>
             <if test="cashierPhoneNo != null and cashierPhoneNo != ''">
-                 `cashier_phone_no`=#{cashierPhoneNo},
+                `cashier_phone_no`=#{cashierPhoneNo},
             </if>
             <if test="sellerNo != null and sellerNo != ''">
-                 `seller_no`=#{sellerNo},
+                `seller_no`=#{sellerNo},
             </if>
             <if test="createTime != null">
-                 `create_time`=#{createTime},
+                `create_time`=#{createTime},
             </if>
             <if test="payNo != null and payNo != ''">
-                 `pay_no`=#{payNo},
+                `pay_no`=#{payNo},
             </if>
             <if test="receiveName != null and receiveName != ''">
-                 `receive_name`=#{receiveName},
+                `receive_name`=#{receiveName},
             </if>
             <if test="receiveNo != null and receiveNo != ''">
-                 `receive_no`=#{receiveNo},
+                `receive_no`=#{receiveNo},
             </if>
             <if test="aliUserId != null and aliUserId != ''">
-                 `ali_user_id`=#{aliUserId},
+                `ali_user_id`=#{aliUserId},
             </if>
             <if test="reason != null and reason != ''">
-                 `reason`=#{reason},
+                `reason`=#{reason},
+            </if>
+            <if test="collectAccountNumber != null and collectAccountNumber != ''">
+                `collect_account_number`=#{collectAccountNumber},
+            </if>
+            <if test="accountNo != null and accountNo != ''">
+                `account_no`=#{accountNo},
+            </if>
+            <if test="provinceName != null and provinceName != ''">
+                `province_name`=#{provinceName},
+            </if>
+            <if test="cashierNo != null and cashierNo != ''">
+                `cashier_no`=#{cashierNo},
+            </if>
+            <if test="provinceCode != null and provinceCode != ''">
+                `province_code`=#{provinceCode},
+            </if>
+            <if test="tradingTime != null">
+                `trading_time`=#{tradingTime},
+            </if>
+            <if test="customPhone != null and customPhone != ''">
+                `custom_phone`=#{customPhone},
+            </if>
+            <if test="packetNo != null and packetNo != ''">
+                `packet_no`=#{packetNo},
             </if>
         </set>
         WHERE id=#{id}

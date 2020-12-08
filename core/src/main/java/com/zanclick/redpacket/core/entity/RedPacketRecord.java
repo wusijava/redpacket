@@ -78,6 +78,82 @@ public class RedPacketRecord implements Identifiable<Long> {
    */
   private String reason;
 
+  /**
+   * 红包领取账号
+   */
+  private String collectAccountNumber;
 
+  /**
+   * 到账账号
+   */
+  private String accountNo;
+
+  /**
+   * 省份
+   */
+  private String provinceName;
+
+  /**
+   * 下单营业员编号
+   */
+  private String cashierNo;
+
+
+  /**
+   * 省份
+   */
+  private String provinceCode;
+  /**
+   * 交易时间
+   */
+  private Date tradingTime;
+
+  private String customPhone;
+  private String packetNo;
+  public enum State {
+    FAIL(-1,"领取失败"),
+    WAITING(1,"待领取"),
+    RECEIVED(2, "已领取"),
+    SUCCESS(3, "已到账"),
+    CANCLE(4, "已取消");
+
+    private Integer code;
+    private String desc;
+
+    State(Integer code, String desc) {
+      this.code = code;
+      this.desc = desc;
+    }
+
+    public Integer getCode() {
+      return code;
+    }
+
+    public void setCode(Integer code) {
+      this.code = code;
+    }
+
+    public String getDesc() {
+      return desc;
+    }
+
+    public void setDesc(String desc) {
+      this.desc = desc;
+    }
+  }
+  public String getStateDesc() {
+    if (RedPacket.State.WAITING.getCode().equals(state)) {
+      return "已创建";
+    } else if (RedPacket.State.RECEIVED.getCode().equals(state)) {
+      return "已领取";
+    } else if (RedPacket.State.SUCCESS.getCode().equals(state)) {
+      return "已到账";
+    } else if (RedPacket.State.CANCLE.getCode().equals(state)) {
+      return "已取消";
+    } else if (RedPacket.State.FAIL.getCode().equals(state)) {
+      return "领取失败";
+    }
+    return null;
+  }
 
 }

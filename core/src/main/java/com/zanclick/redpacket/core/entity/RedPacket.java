@@ -63,7 +63,7 @@ public class RedPacket implements Identifiable<Long> {
   private Date createTime;
 
 
-  private String orderTime;
+  private Date orderTime;
 
   private Integer delayDays;
 
@@ -88,11 +88,17 @@ public class RedPacket implements Identifiable<Long> {
    */
   private String cashierNo;
 
+
+  /**
+   * 省份
+   */
+  private String provinceCode;
   /**
    * 交易时间
    */
   private Date tradingTime;
   public enum State {
+    FAIL(-1,"领取失败"),
     WAITING(1,"待领取"),
     RECEIVED(2, "已领取"),
     SUCCESS(3, "已到账"),
@@ -131,6 +137,8 @@ public class RedPacket implements Identifiable<Long> {
       return "已到账";
     } else if (State.CANCLE.getCode().equals(state)) {
       return "已取消";
+    } else if (State.FAIL.getCode().equals(state)) {
+      return "领取失败";
     }
     return null;
   }

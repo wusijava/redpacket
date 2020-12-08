@@ -2,6 +2,7 @@ package com.zanclick.redpacket.core.controller;
 
 import com.zanclick.redpacket.common.entity.Response;
 import com.zanclick.redpacket.common.utils.DataUtils;
+import com.zanclick.redpacket.common.utils.DateUtils;
 import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.query.RedPacketQuery;
 import com.zanclick.redpacket.core.service.RedPacketService;
@@ -27,7 +28,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "api/web/redPacket")
+@RequestMapping(value = "/api/web/redPacket")
 public class WebRedPacketController {
 
     @Autowired
@@ -77,15 +78,15 @@ public class WebRedPacketController {
         vo.setCashierPhoneNo(redPacket.getCashierPhoneNo());
         vo.setSellerNo(redPacket.getSellerNo());
         vo.setCustomPhone(redPacket.getCustomPhone());
-        vo.setOrderTime(redPacket.getOrderTime());
+        vo.setOrderTime(DateUtils.formatDate(redPacket.getOrderTime(), DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS));
         vo.setDelayDays(redPacket.getDelayDays());
         vo.setIsNextMonthSettle(redPacket.getIsNextMonthSettle());
-        vo.setCreateTime(redPacket.getCreateTime());
+        vo.setCreateTime(DateUtils.formatDate(redPacket.getCreateTime(), DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS));
         vo.setCollectAccountNumber(redPacket.getCollectAccountNumber());
         vo.setAccountNo(redPacket.getAccountNo());
         vo.setProvinceName(redPacket.getProvinceName());
         vo.setCashierNo(redPacket.getCashierNo());
-        vo.setTradingTime(redPacket.getTradingTime());
+        vo.setTradingTime(DateUtils.formatDate(redPacket.getTradingTime(), DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS));
         return vo;
     }
 

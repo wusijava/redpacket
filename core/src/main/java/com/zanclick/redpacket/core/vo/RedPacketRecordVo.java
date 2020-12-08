@@ -36,6 +36,8 @@ public class RedPacketRecordVo {
      * 状态 1已创建 2已领取 3已到账 4已取消
      */
     private Integer state;
+
+    private String stateDesc;
     /**
      * 类型 1支付宝 2乐薪 3 网商
      */
@@ -55,7 +57,7 @@ public class RedPacketRecordVo {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
     /**
      * 付款账号
      */
@@ -76,6 +78,39 @@ public class RedPacketRecordVo {
      * 领取失败原因
      */
     private String reason;
+    /**
+     * 红包领取账号
+     */
+    private String collectAccountNumber;
+
+    /**
+     * 到账账号
+     */
+    private String accountNo;
+
+    /**
+     * 省份
+     */
+    private String provinceName;
+
+    /**
+     * 下单营业员编号
+     */
+    private String cashierNo;
+
+
+    /**
+     * 省份
+     */
+    private String provinceCode;
+    /**
+     * 交易时间
+     */
+    private Date tradingTime;
+
+    private String packetNo;
+
+    private String customPhone;
 
 
 }
