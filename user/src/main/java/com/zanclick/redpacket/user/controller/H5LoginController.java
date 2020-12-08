@@ -43,6 +43,11 @@ public class H5LoginController {
     public Response<String> login(String username, String password) {
         return Response.ok("登录成功");
     }
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> logout() {
+        return Response.ok("退出成功");
+    }
 
     @ApiOperation(value = "h5注册")
     @ApiImplicitParams({

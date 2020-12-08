@@ -110,6 +110,11 @@ public class RedPacketRecord implements Identifiable<Long> {
 
   private String customPhone;
   private String packetNo;
+
+  /**
+   * 领取的登录账号
+   */
+  private String userName;
   public enum State {
     FAIL(-1,"领取失败"),
     WAITING(1,"待领取"),

@@ -94,6 +94,10 @@ public class RedPacket implements Identifiable<Long> {
    */
   private String provinceCode;
   /**
+   * 红包编号
+   */
+  private String packetNo;
+  /**
    * 交易时间
    */
   private Date tradingTime;

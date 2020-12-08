@@ -1,4 +1,4 @@
-package com.zanclick.redpacket.core.controller;
+package com.zanclick.redpacket.core.controller.H5;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/h5/")
+@RequestMapping(value = "/h5/api/")
 public class RedPacketController {
     @Autowired
     private RedPacketService redPacketService;
@@ -91,12 +91,14 @@ public class RedPacketController {
             return Response.fail("红包已取消!");
         }
         LoginContext.RequestUser currentUser = LoginContext.getCurrentUser();
-        System.out.println(currentUser);
+        JSONObject map=new JSONObject();
+        map.put("id", id);
+        map.put("userName",currentUser.getUsername());
         if(RedPacket.State.WAITING.getCode().equals(packet.getState())){
-            SendMessage.sendMessage(JmsMessaging.RECEIVE_REDPACKET_MESSAGE,String.valueOf(id));
+            SendMessage.sendMessage(JmsMessaging.RECEIVE_REDPACKET_MESSAGE,map.toJSONString());
         }
 
-        return null;
+        return Response.ok("领取成功,请到钱包查看!");
     }
 
 }
