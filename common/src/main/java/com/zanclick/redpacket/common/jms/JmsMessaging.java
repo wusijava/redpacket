@@ -8,6 +8,6 @@ package com.zanclick.redpacket.common.jms;
  **/
 public class JmsMessaging {
 
-    public final static String ORDER_CESHI= "order.ceshi";
+    public final static String RECEIVE_REDPACKET_MESSAGE= "receive.redpacket.message";
 
 }

@@ -31,16 +31,12 @@ public class LoginContext implements Serializable {
 
         private String username;
 
-        private Integer type;
+        //private Integer type;
 
         private String uid;
 
-        private String wayId;
+       // private String wayId;
 
-        private String storeNo;
-
-        private String salt;
-
-        private String password;
+       // private String storeNo;
     }
 }
