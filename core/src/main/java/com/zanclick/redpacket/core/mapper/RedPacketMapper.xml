@@ -14,6 +14,10 @@
             <result column="cashier_phone_no" property="cashierPhoneNo" jdbcType="VARCHAR"/>
             <result column="seller_no" property="sellerNo" jdbcType="VARCHAR"/>
             <result column="custom_phone" property="customPhone" jdbcType="VARCHAR"/>
+            <result column="order_time" property="orderTime" jdbcType="TIMESTAMP"/>
+            <result column="delay_days" property="delayDays" jdbcType="INTEGER"/>
+            <result column="is_next_month_settle" property="isNextMonthSettle" jdbcType="INTEGER"/>
+            <result column="packet_no" property="packetNo" jdbcType="VARCHAR"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
@@ -31,6 +35,10 @@
             `cashier_phone_no`,
             `seller_no`,
             `custom_phone`,
+            `order_time`,
+            `delay_days`,
+            `is_next_month_settle`,
+            `packet_no`,
             `create_time`
     </sql>
     <sql id="Base_Where_Clause">
@@ -71,6 +79,18 @@
                     </if>
                     <if test="customPhone != null and customPhone != ''">
                         AND `custom_phone`=#{customPhone}
+                    </if>
+                    <if test="orderTime != null">
+                        AND `order_time`=#{orderTime}
+                    </if>
+                    <if test="delayDays != null">
+                        AND `delay_days`=#{delayDays}
+                    </if>
+                    <if test="isNextMonthSettle != null">
+                        AND `is_next_month_settle`=#{isNextMonthSettle}
+                    </if>
+                    <if test="packetNo != null and packetNo != ''">
+                        AND `packet_no`=#{packetNo}
                     </if>
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
@@ -128,6 +148,10 @@
             `cashier_phone_no`,
             `seller_no`,
             `custom_phone`,
+            `order_time`,
+            `delay_days`,
+            `is_next_month_settle`,
+            `packet_no`,
             `create_time`
         )
         VALUES(
@@ -143,6 +167,10 @@
             #{cashierPhoneNo},
             #{sellerNo},
             #{customPhone},
+            #{orderTime},
+            #{delayDays},
+            #{isNextMonthSettle},
+            #{packetNo},
             #{createTime}
         )
     </insert>
@@ -163,6 +191,10 @@
             `cashier_phone_no`,
             `seller_no`,
             `custom_phone`,
+            `order_time`,
+            `delay_days`,
+            `is_next_month_settle`,
+            `packet_no`,
             `create_time`
         )
         VALUES
@@ -180,6 +212,10 @@
             #{cm.cashierPhoneNo},
             #{cm.sellerNo},
             #{cm.customPhone},
+            #{cm.orderTime},
+            #{cm.delayDays},
+            #{cm.isNextMonthSettle},
+            #{cm.packetNo},
             #{cm.createTime}
             )
         </foreach>
@@ -229,6 +265,18 @@
             </if>
             <if test="customPhone != null and customPhone != ''">
                  `custom_phone`=#{customPhone},
+            </if>
+            <if test="orderTime != null">
+                 `order_time`=#{orderTime},
+            </if>
+            <if test="delayDays != null">
+                 `delay_days`=#{delayDays},
+            </if>
+            <if test="isNextMonthSettle != null">
+                 `is_next_month_settle`=#{isNextMonthSettle},
+            </if>
+            <if test="packetNo != null and packetNo != ''">
+                 `packet_no`=#{packetNo},
             </if>
             <if test="createTime != null">
                  `create_time`=#{createTime},
