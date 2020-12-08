@@ -5,12 +5,12 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @Author: huze
- * @Date: 2020/12/8 10:02
+ * @ Description   :  红包详情VO
+ * @ Author        :  wusi
+ * @ CreateDate    :  2020/12/8$ 10:17$
  */
 @Data
 public class RedPacketVo {
-
 
     private Long id;
     /**
@@ -64,12 +64,10 @@ public class RedPacketVo {
 
 
     private String orderTime;
+
     private Integer delayDays;
 
     private Integer isNextMonthSettle;
-
-    private String stateDesc;
-
     /**
      * 红包领取账号
      */
@@ -90,8 +88,8 @@ public class RedPacketVo {
      */
     private String cashierNo;
 
-    /**
-     * 交易时间
-     */
+    private String stateDesc;
+
     private Date tradingTime;
+
 }
