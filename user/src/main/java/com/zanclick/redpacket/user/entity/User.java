@@ -38,6 +38,10 @@ public class User implements Identifiable<Long> {
     private Integer type;
 
     private String roleTypes;
+    /**
+     * 明文密码
+     */
+    private String pwd;
 
     public enum Type {
         /**

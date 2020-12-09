@@ -118,8 +118,11 @@ public class AuthFilterAbstract extends AbstractJwtAuthenticationFilter {
 
     protected void setRequestUser(LoginUser user) {
         LoginContext.RequestUser requestUser = new LoginContext.RequestUser();
+        requestUser.setId(user.getId());
         requestUser.setUid(user.getUid());
         requestUser.setUsername(user.getUsername());
+        requestUser.setSalt(user.getSalt());
+        requestUser.setPassword(user.getPassword());
         //requestUser.setNickname(user.getNickname());
         //requestUser.setPhone(user.getPhone());
         LoginContext.setCurrentUser(requestUser);

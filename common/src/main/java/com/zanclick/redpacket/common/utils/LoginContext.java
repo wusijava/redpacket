@@ -27,7 +27,7 @@ public class LoginContext implements Serializable {
     @Data
     public static class RequestUser{
 
-        private String id;
+        private Long id;
 
         private String username;
 

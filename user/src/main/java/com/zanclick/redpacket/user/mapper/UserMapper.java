@@ -5,8 +5,8 @@ import com.zanclick.redpacket.user.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author long5
- * @date 2020-11-28 19:42:09
+ * @author admin
+ * @date 2020-12-09 11:05:38
  **/
 @Mapper
 public interface UserMapper extends BaseMapper<User,Long> {

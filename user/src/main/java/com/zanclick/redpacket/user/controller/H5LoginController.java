@@ -3,6 +3,7 @@ package com.zanclick.redpacket.user.controller;
 
 import com.zanclick.redpacket.common.entity.Response;
 import com.zanclick.redpacket.common.utils.DataUtils;
+import com.zanclick.redpacket.common.utils.LoginContext;
 import com.zanclick.redpacket.common.utils.PassWordUtil;
 import com.zanclick.redpacket.user.entity.User;
 import com.zanclick.redpacket.user.enums.DataRoles;
@@ -43,6 +44,7 @@ public class H5LoginController {
     public Response<String> login(String username, String password) {
         return Response.ok("登录成功");
     }
+
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
     public Response<String> logout() {
@@ -84,4 +86,28 @@ public class H5LoginController {
         return Response.ok("注册成功!");
     }
 
+    //修改密码
+    @RequestMapping(value = "/api/change", method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> change(String oldPassword, String password, String passwordConfirm) {
+        if (DataUtils.isEmpty(oldPassword)) {
+            return Response.fail("缺少旧密码!");
+        }
+        if (DataUtils.isEmpty(password)) {
+            return Response.fail("缺少新密码!");
+        }
+        if (DataUtils.isEmpty(passwordConfirm)) {
+            return Response.fail("缺少确认新密码!");
+        }
+        if(!password.trim().equals(passwordConfirm.trim())){
+            return Response.fail("新密码两次输入不一致!");
+        }
+        LoginContext.RequestUser user = LoginContext.getCurrentUser();
+        System.out.println(user);
+        String result = userService.changePassword(Long.valueOf(user.getId()), user.getSalt(), user.getPassword(), oldPassword, password);
+        if (result != null) {
+            return Response.fail(result);
+        }
+        return Response.ok("修改成功，请重新登录");
+    }
 }

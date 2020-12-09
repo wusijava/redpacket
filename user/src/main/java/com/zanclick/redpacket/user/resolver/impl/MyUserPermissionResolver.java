@@ -46,6 +46,7 @@ public class MyUserPermissionResolver extends UserPermissionResolver {
 //            throw  new UserPermissionResolver.UsernameAndPasswordException("权限配置异常");
 //        }
         LoginUser lu = new LoginUser();
+        lu.setId(user.getId());
         lu.setUsername(user.getUsername());
         lu.setPassword(user.getPassword());
         lu.setPhone(user.getMobile());
