@@ -8,5 +8,5 @@ import com.zanclick.redpacket.core.entity.RedPacketRecord;
  * @date 2020-12-08 17:00:50
  **/
 public interface RedPacketRecordService extends BaseService<RedPacketRecord,Long> {
-
+    RedPacketRecord findByPacketNo(String packetNo);
 }

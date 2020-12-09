@@ -35,7 +35,6 @@ public class ReceiveRedPacketListener {
 
     @JmsListener(destination = JmsMessaging.RECEIVE_REDPACKET_MESSAGE)
     public void getMessage(String message) {
-        System.out.println("进入队列");
         JSONObject object = JSONObject.parseObject(message);
         Long id = object.getLong("id");
         String userName = object.getString("userName");
@@ -49,9 +48,7 @@ public class ReceiveRedPacketListener {
             log.error("红包状态异常,红包id:{}", id);
             return;
         }
-        /*RedPacketRecord record= new RedPacketRecord();
-        record.setPacketNo(packet.getPacketNo());
-        RedPacketRecord redPacketRecord = redPacketRecordService.queryOne(record);
+        RedPacketRecord redPacketRecord = redPacketRecordService.findByPacketNo(packet.getPacketNo());
         if(RedPacketRecord.State.RECEIVED.getCode().equals(redPacketRecord.getState())||RedPacketRecord.State.SUCCESS.getCode().equals(redPacketRecord.getState())){
             log.error("红包已领取,红包id:{}", id);
             return;
@@ -59,7 +56,7 @@ public class ReceiveRedPacketListener {
         if(RedPacketRecord.State.CANCLE.getCode().equals(redPacketRecord.getState())){
             log.error("红包已取消,红包id:{}", id);
             return;
-        }*/
+        }
         RedPacketRecord createRecord = CreateRecord(user, packet);
 
 

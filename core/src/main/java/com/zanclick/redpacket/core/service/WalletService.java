@@ -7,6 +7,6 @@ import com.zanclick.redpacket.core.entity.Wallet;
  * @author wusi
  * @date 2020-12-07 14:30:32
  **/
-public interface WalletService extends BaseService<Wallet,Long> {
-
+public interface WalletService extends BaseService<Wallet, Long> {
+    Wallet findByUserName(String userName);
 }

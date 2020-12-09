@@ -11,5 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface WalletMapper extends BaseMapper<Wallet,Long> {
 
+    Wallet findByUserName(String userName);
 
 }

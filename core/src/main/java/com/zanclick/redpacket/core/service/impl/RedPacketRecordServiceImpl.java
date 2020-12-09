@@ -23,4 +23,9 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
     protected BaseMapper<RedPacketRecord, Long> getBaseMapper() {
         return redPacketRecordMapper;
     }
+
+    @Override
+    public RedPacketRecord findByPacketNo(String packetNo) {
+        return redPacketRecordMapper.findByPacketNo(packetNo);
+    }
 }

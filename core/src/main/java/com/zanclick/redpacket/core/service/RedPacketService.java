@@ -2,6 +2,7 @@ package com.zanclick.redpacket.core.service;
 
 import com.zanclick.redpacket.common.base.service.BaseService;
 import com.zanclick.redpacket.core.entity.RedPacket;
+import com.zanclick.redpacket.core.entity.Wallet;
 
 /**
  * @author 27720
@@ -11,4 +12,6 @@ public interface RedPacketService extends BaseService<RedPacket,Long> {
 
 
     String selectSunAmount(RedPacket redPacket);
+
+    void transfer(Wallet query, String money);
 }

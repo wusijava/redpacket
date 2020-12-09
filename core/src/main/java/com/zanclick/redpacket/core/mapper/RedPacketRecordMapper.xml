@@ -309,6 +309,13 @@
         <include refid="table"/>
         WHERE id=#{id}
     </select>
+    <select id="findByPacketNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE packet_no=#{packetNo}
+    </select>
 
     <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.RedPacketRecord">
         UPDATE
