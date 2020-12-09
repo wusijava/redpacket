@@ -30,6 +30,14 @@ public class Wallet implements Identifiable<Long> {
    */
   private Integer state;
   /**
+   * 收款账号
+   */
+  private String receiveNo;
+  /**
+   * 收款实名
+   */
+  private String receiveName;
+  /**
    * 创建时间
    */
   private Date createTime;

@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zanclick.redpacket.core.mapper.WalletMapper">
-    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.core.entity.Wallet">
+<mapper namespace="com.zanclick.redpacket.core.mapper.CorrelationConfigurationMapper">
+    <resultMap id="BaseResultMap" type="com.zanclick.redpacket.core.entity.CorrelationConfiguration">
             <id column="id" property="id" jdbcType="BIGINT"/>
             <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-            <result column="total_amount" property="totalAmount" jdbcType="VARCHAR"/>
-            <result column="can_withdraw_amount" property="canWithdrawAmount" jdbcType="VARCHAR"/>
+            <result column="correlation_name" property="correlationName" jdbcType="VARCHAR"/>
+            <result column="type" property="type" jdbcType="INTEGER"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
-            <result column="receive_no" property="receiveNo" jdbcType="VARCHAR"/>
-            <result column="receive_name" property="receiveName" jdbcType="VARCHAR"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="table">wallet</sql>
+    <sql id="table">correlation_configuration</sql>
     <sql id="Base_Column_List">
             `id`,
             `user_name`,
-            `total_amount`,
-            `can_withdraw_amount`,
+            `correlation_name`,
+            `type`,
             `state`,
-            `receive_no`,
-            `receive_name`,
             `create_time`
     </sql>
     <sql id="Base_Where_Clause">
@@ -32,20 +28,14 @@
                     <if test="userName != null and userName != ''">
                         AND `user_name`=#{userName}
                     </if>
-                    <if test="totalAmount != null and totalAmount != ''">
-                        AND `total_amount`=#{totalAmount}
+                    <if test="correlationName != null and correlationName != ''">
+                        AND `correlation_name`=#{correlationName}
                     </if>
-                    <if test="canWithdrawAmount != null and canWithdrawAmount != ''">
-                        AND `can_withdraw_amount`=#{canWithdrawAmount}
+                    <if test="type != null">
+                        AND `type`=#{type}
                     </if>
                     <if test="state != null">
                         AND `state`=#{state}
-                    </if>
-                    <if test="receiveNo != null and receiveNo != ''">
-                        AND `receive_no`=#{receiveNo}
-                    </if>
-                    <if test="receiveName != null and receiveName != ''">
-                        AND `receive_name`=#{receiveName}
                     </if>
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
@@ -86,28 +76,24 @@
         <include refid="table"/>
     </select>
 
-    <insert id="insert" parameterType="com.zanclick.redpacket.core.entity.Wallet" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.zanclick.redpacket.core.entity.CorrelationConfiguration" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO
         <include refid="table"/>
         (
             `id`,
             `user_name`,
-            `total_amount`,
-            `can_withdraw_amount`,
+            `correlation_name`,
+            `type`,
             `state`,
-            `receive_no`,
-            `receive_name`,
             `create_time`
         )
         VALUES(
             #{id},
             #{userName},
-            #{totalAmount},
-            #{canWithdrawAmount},
+            #{correlationName},
+            #{type},
             #{state},
-            #{receiveNo},
-            #{receiveName},
             #{createTime}
         )
     </insert>
@@ -118,11 +104,9 @@
         (
             `id`,
             `user_name`,
-            `total_amount`,
-            `can_withdraw_amount`,
+            `correlation_name`,
+            `type`,
             `state`,
-            `receive_no`,
-            `receive_name`,
             `create_time`
         )
         VALUES
@@ -130,11 +114,9 @@
             (
             #{cm.id},
             #{cm.userName},
-            #{cm.totalAmount},
-            #{cm.canWithdrawAmount},
+            #{cm.correlationName},
+            #{cm.type},
             #{cm.state},
-            #{cm.receiveNo},
-            #{cm.receiveName},
             #{cm.createTime}
             )
         </foreach>
@@ -148,27 +130,21 @@
         WHERE id=#{id}
     </select>
 
-    <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.Wallet">
+    <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.CorrelationConfiguration">
         UPDATE
         <include refid="table"/>
         <set>
             <if test="userName != null and userName != ''">
                  `user_name`=#{userName},
             </if>
-            <if test="totalAmount != null and totalAmount != ''">
-                 `total_amount`=#{totalAmount},
+            <if test="correlationName != null and correlationName != ''">
+                 `correlation_name`=#{correlationName},
             </if>
-            <if test="canWithdrawAmount != null and canWithdrawAmount != ''">
-                 `can_withdraw_amount`=#{canWithdrawAmount},
+            <if test="type != null">
+                 `type`=#{type},
             </if>
             <if test="state != null">
                  `state`=#{state},
-            </if>
-            <if test="receiveNo != null and receiveNo != ''">
-                 `receive_no`=#{receiveNo},
-            </if>
-            <if test="receiveName != null and receiveName != ''">
-                 `receive_name`=#{receiveName},
             </if>
             <if test="createTime != null">
                  `create_time`=#{createTime},
