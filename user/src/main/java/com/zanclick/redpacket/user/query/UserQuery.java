@@ -14,4 +14,8 @@ public class UserQuery extends User {
     private String startTime;
 
     private String endTime;
+
+    private String newPassword;
+
+    private String oldPassword;
 }

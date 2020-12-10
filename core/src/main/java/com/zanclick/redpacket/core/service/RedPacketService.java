@@ -16,4 +16,7 @@ public interface RedPacketService extends BaseService<RedPacket, Long> {
     void transfer(Wallet query, String money);
 
     RedPacket findByPacketNo(String packetNo);
+
+    RedPacket selectByOutTradeNo(String outTradeNo);
+
 }

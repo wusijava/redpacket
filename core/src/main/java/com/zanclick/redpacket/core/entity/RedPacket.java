@@ -155,4 +155,64 @@ public class RedPacket implements Identifiable<Long> {
     return null;
   }
 
+  public enum Type {
+    ZFB(1,"支付宝"),
+    LX(2, "乐薪"),
+    WS(3, "网商");
+
+    private Integer code;
+    private String desc;
+
+    Type(Integer code, String desc) {
+      this.code = code;
+      this.desc = desc;
+    }
+
+    public Integer getCode() {
+      return code;
+    }
+
+    public void setCode(Integer code) {
+      this.code = code;
+    }
+
+    public String getDesc() {
+      return desc;
+    }
+
+    public void setDesc(String desc) {
+      this.desc = desc;
+    }
+  }
+  public String getTypeDesc() {
+    if (Type.ZFB.getCode().equals(type)) {
+      return Type.ZFB.getDesc();
+    }
+    if (Type.LX.getCode().equals(type)) {
+      return Type.LX.getDesc();
+    }
+    if (Type.WS.getCode().equals(type)) {
+      return Type.WS.getDesc();
+    }
+    return null;
+  }
+
+  public Boolean isFailed() {
+    return State.FAIL.getCode().equals(state);
+  }
+
+  public Boolean isWait() {
+    return State.WAITING.getCode().equals(state);
+  }
+
+  public Boolean isSuccess() {
+    return State.SUCCESS.getCode().equals(state);
+  }
+  public Boolean isWaiting() {
+    return State.RECEIVED.getCode().equals(state);
+  }
+
+  public Boolean isRefund() {
+    return State.CANCLE.getCode().equals(state);
+  }
 }

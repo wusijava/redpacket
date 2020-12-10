@@ -86,4 +86,9 @@ public class RedPacketServiceImpl extends BaseMybatisServiceImpl<RedPacket,Long>
     public RedPacket findByPacketNo(String packetNo) {
         return redPacketMapper.findByPacketNo(packetNo);
     }
+
+    @Override
+    public RedPacket selectByOutTradeNo(String outTradeNo) {
+        return redPacketMapper.selectByOutTradeNo(outTradeNo);
+    }
 }

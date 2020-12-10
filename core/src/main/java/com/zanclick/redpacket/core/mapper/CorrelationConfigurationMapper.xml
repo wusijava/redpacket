@@ -8,6 +8,7 @@
             <result column="type" property="type" jdbcType="INTEGER"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="table">correlation_configuration</sql>
@@ -17,7 +18,8 @@
             `correlation_name`,
             `type`,
             `state`,
-            `create_time`
+            `create_time`,
+            `is_delete`
     </sql>
     <sql id="Base_Where_Clause">
         <where>
@@ -40,6 +42,7 @@
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
                     </if>
+                     AND `is_delete`=1
             </trim>
         </where>
         ORDER BY id DESC
@@ -86,7 +89,8 @@
             `correlation_name`,
             `type`,
             `state`,
-            `create_time`
+            `create_time`,
+            `is_delete`
         )
         VALUES(
             #{id},
@@ -94,7 +98,8 @@
             #{correlationName},
             #{type},
             #{state},
-            #{createTime}
+            #{createTime},
+            #{isDelete}
         )
     </insert>
 
@@ -107,7 +112,8 @@
             `correlation_name`,
             `type`,
             `state`,
-            `create_time`
+            `create_time`,
+            `is_delete`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
@@ -117,7 +123,8 @@
             #{cm.correlationName},
             #{cm.type},
             #{cm.state},
-            #{cm.createTime}
+            #{cm.createTime},
+            #{cm.isDelete}
             )
         </foreach>
     </insert>
@@ -128,6 +135,14 @@
         FROM
         <include refid="table"/>
         WHERE id=#{id}
+    </select>
+
+    <select id="findByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE user_name=#{userName}
     </select>
 
     <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.CorrelationConfiguration">
@@ -148,6 +163,9 @@
             </if>
             <if test="createTime != null">
                  `create_time`=#{createTime},
+            </if>
+            <if test="isDelete != null">
+                 `is_delete`=#{isDelete},
             </if>
         </set>
         WHERE id=#{id}

@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author wusi
- * @date 2020-12-09 10:10:34
+ * @author 27720
+ * @date 2020-12-09 14:46:12
  **/
 @Service
 public class CorrelationConfigurationServiceImpl extends BaseMybatisServiceImpl<CorrelationConfiguration,Long> implements CorrelationConfigurationService {
@@ -22,5 +22,10 @@ public class CorrelationConfigurationServiceImpl extends BaseMybatisServiceImpl<
     @Override
     protected BaseMapper<CorrelationConfiguration, Long> getBaseMapper() {
         return correlationConfigurationMapper;
+    }
+
+    @Override
+    public CorrelationConfiguration findByUsername(String username) {
+        return correlationConfigurationMapper.findByUsername(username);
     }
 }
