@@ -3,4 +3,4 @@ spring:
     active: dev
 
 server:
-  port: 8884
+  port: 8848

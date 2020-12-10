@@ -335,6 +335,14 @@
         WHERE packet_no=#{packetNo}
     </select>
 
+    <select id="findByOutTradeNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE out_trade_no=#{outTradeNo}
+    </select>
+
     <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.RedPacketRecord">
         UPDATE
         <include refid="table"/>

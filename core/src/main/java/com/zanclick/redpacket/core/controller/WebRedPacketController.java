@@ -89,6 +89,7 @@ public class WebRedPacketController {
     }
     private RedPacketVo getListVo(RedPacket redPacket) {
         RedPacketVo vo = new RedPacketVo();
+        vo.setBrwOrdNo(redPacket.getBrwOrdNo());
         vo.setTypeDesc(redPacket.getTypeDesc());
         vo.setAmount(redPacket.getAmount());
         vo.setAppId(redPacket.getAppId());
@@ -187,34 +188,34 @@ public class WebRedPacketController {
     })
     @RequestMapping(value = "settle", method = RequestMethod.POST)
     @ResponseBody
-    public Response<String> settle(String outTradeNo) {
-        if (DataUtils.isEmpty(outTradeNo)) {
-            log.error("酬金打款失败,数据不存在:{}", outTradeNo);
+    public Response<String> settle(String brwOrdNo) {
+        if (DataUtils.isEmpty(brwOrdNo)) {
+            log.error("酬金打款失败,数据不存在:{}", brwOrdNo);
             return Response.fail("酬金打款失败,数据不存在");
         }
-        RedPacket redPacket = redPacketService.selectByOutTradeNo(outTradeNo);
+        RedPacket redPacket = redPacketService.selectBybrwOrdNo(brwOrdNo);
         if (DataUtils.isEmpty(redPacket)) {
-            log.error("酬金打款失败,数据不存在:{}", outTradeNo);
+            log.error("酬金打款失败,数据不存在:{}", brwOrdNo);
             return Response.fail("酬金打款失败,数据不存在");
         }
         if (redPacket.isSuccess()) {
-            log.error("酬金打款失败,已打款成功:{}", outTradeNo);
+            log.error("酬金打款失败,已打款成功:{}", brwOrdNo);
             return Response.fail("酬金打款失败,已打款成功");
         }
         if (redPacket.isWaiting()) {
-            log.error("酬金打款失败,正在打款中:{}", outTradeNo);
+            log.error("酬金打款失败,正在打款中:{}", brwOrdNo);
             return Response.fail("酬金打款失败,正在打款中");
         }
         if (redPacket.isRefund()) {
-            log.error("酬金打款失败,用户已退单:{}", outTradeNo);
+            log.error("酬金打款失败,用户已退单:{}", brwOrdNo);
             return Response.fail("酬金打款失败,用户已退单");
         }
         try {
             //TODO 同步或者异步
             //rebateRecordService.settle(rebate);
-            sendSettleMsg(outTradeNo);
+            sendSettleMsg(brwOrdNo);
         } catch (Exception e) {
-            log.error("酬金打款异常:{},{}", outTradeNo, e);
+            log.error("酬金打款异常:{},{}", brwOrdNo, e);
             return Response.fail("酬金打款异常");
         }
         return Response.ok("酬金打款中");

@@ -14,5 +14,5 @@ public interface RedPacketMapper extends BaseMapper<RedPacket,Long> {
 
     String selectSunAmount(RedPacket redPacket);
 
-    RedPacket selectByOutTradeNo(String outTradeNo);
+    RedPacket selectBybrwOrdNo(String brwOrdNo);
 }

@@ -13,7 +13,7 @@ public interface RedPacketService extends BaseService<RedPacket,Long> {
 
     String selectSunAmount(RedPacket redPacket);
 
-    RedPacket selectByOutTradeNo(String outTradeNo);
+    RedPacket selectBybrwOrdNo(String outTradeNo);
 
 
     void transfer(Wallet query, String money);

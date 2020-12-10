@@ -96,6 +96,11 @@ public class RedPacketVo {
 
     private String typeDesc;
 
+    /**
+     * 借款订单号
+     */
+    private String brwOrdNo;
+
 
 
     public static String[] headers = {

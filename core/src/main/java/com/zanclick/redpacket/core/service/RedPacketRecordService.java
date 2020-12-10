@@ -20,4 +20,6 @@ public interface RedPacketRecordService extends BaseService<RedPacketRecord,Long
 
     RedPacketRecord createRebateRecord(RedPacket rebate,Integer state);
     RedPacketRecord findByPacketNo(String packetNo);
+
+    RedPacketRecord findByOutTradeNo(String outTradeNo);
 }

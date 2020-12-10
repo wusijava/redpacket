@@ -110,11 +110,11 @@ public class RedPacket implements Identifiable<Long> {
    */
   private Date tradingTime;
   public enum State {
-    FAIL(-1,"领取失败"),
-    WAITING(1,"待领取"),
-    RECEIVED(2, "已领取"),
-    SUCCESS(3, "已到账"),
-    CANCLE(4, "已取消");
+    FAIL(-1,"打款失败"),
+    WAITING(1,"等待打款"),
+    RECEIVED(2, "打款中"),
+    SUCCESS(3, "打款成功"),
+    CANCLE(4, "用户退单");
 
     private Integer code;
     private String desc;
@@ -142,15 +142,15 @@ public class RedPacket implements Identifiable<Long> {
   }
   public String getStateDesc() {
     if (State.WAITING.getCode().equals(state)) {
-      return "已创建";
+      return "等待打款";
     } else if (State.RECEIVED.getCode().equals(state)) {
-      return "已领取";
+      return "打款中";
     } else if (State.SUCCESS.getCode().equals(state)) {
-      return "已到账";
+      return "打款成功";
     } else if (State.CANCLE.getCode().equals(state)) {
-      return "已取消";
+      return "用户退单";
     } else if (State.FAIL.getCode().equals(state)) {
-      return "领取失败";
+      return "打款失败";
     }
     return null;
   }
