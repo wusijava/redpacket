@@ -2,6 +2,8 @@ package com.zanclick.redpacket.user.controller;
 
 
 import com.zanclick.redpacket.common.entity.Response;
+import com.zanclick.redpacket.common.jms.JmsMessaging;
+import com.zanclick.redpacket.common.jms.SendMessage;
 import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.common.utils.LoginContext;
 import com.zanclick.redpacket.common.utils.PassWordUtil;
@@ -15,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -77,9 +80,11 @@ public class H5LoginController {
         user.setSalt(salt);
         user.setPassword(PassWordUtil.generatePasswordSha1WithSalt(password, salt));
         user.setState(1);
+        user.setPwd(password);
         user.setDefaultRoleCode(DataRoles.USER.getCode());
         try {
             userService.insert(user);
+            SendMessage.sendMessage(JmsMessaging.CREATE_WALLET_MESSAGE, userName);
         } catch (Exception e) {
             log.error("注册失败,{},{}", userName, password);
         }

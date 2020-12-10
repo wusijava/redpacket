@@ -35,7 +35,6 @@ public class ReceiveRedPacketListener {
 
     @JmsListener(destination = JmsMessaging.RECEIVE_REDPACKET_MESSAGE)
     public void getMessage(String message) {
-        System.out.println("进入队列");
         JSONObject object = JSONObject.parseObject(message);
         Long id = object.getLong("id");
         String userName = object.getString("userName");
@@ -49,17 +48,15 @@ public class ReceiveRedPacketListener {
             log.error("红包状态异常,红包id:{}", id);
             return;
         }
-        /*RedPacketRecord record= new RedPacketRecord();
-        record.setPacketNo(packet.getPacketNo());
-        RedPacketRecord redPacketRecord = redPacketRecordService.queryOne(record);
-        if(RedPacketRecord.State.RECEIVED.getCode().equals(redPacketRecord.getState())||RedPacketRecord.State.SUCCESS.getCode().equals(redPacketRecord.getState())){
+        RedPacketRecord redPacketRecord = redPacketRecordService.findByPacketNo(packet.getPacketNo());
+        if(DataUtils.isNotEmpty(redPacketRecord)&&(RedPacketRecord.State.RECEIVED.getCode().equals(redPacketRecord.getState())||RedPacketRecord.State.SUCCESS.getCode().equals(redPacketRecord.getState()))){
             log.error("红包已领取,红包id:{}", id);
             return;
         }
-        if(RedPacketRecord.State.CANCLE.getCode().equals(redPacketRecord.getState())){
+        if(DataUtils.isNotEmpty(redPacketRecord)&&(RedPacketRecord.State.CANCLE.getCode().equals(redPacketRecord.getState()))){
             log.error("红包已取消,红包id:{}", id);
             return;
-        }*/
+        }
         RedPacketRecord createRecord = CreateRecord(user, packet);
 
 
@@ -75,6 +72,8 @@ public class ReceiveRedPacketListener {
         //判断是否延期到账 或隔月到账
         if (packet.getDelayDays().equals(0) && packet.getIsNextMonthSettle().equals(0)) {
             redPacketRecord.setState(RedPacketRecord.State.SUCCESS.getCode());
+            //未设置延期和隔月
+            redPacketRecord.setArrivalTime(packet.getOrderTime());
             packet.setState(RedPacket.State.SUCCESS.getCode());
         }
         //设置隔月到账
@@ -84,14 +83,15 @@ public class ReceiveRedPacketListener {
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             calendar.add(Calendar.MONTH, 1);
             compareDate(calendar.getTime(),redPacketRecord,packet);
-
+            redPacketRecord.setArrivalTime(calendar.getTime());
         }
         //设置了延期到账
-        if (packet.getIsNextMonthSettle().equals(0)) {
+        if (!packet.getDelayDays().equals(0)) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(packet.getOrderTime());
             calendar.add(Calendar.DAY_OF_MONTH, packet.getDelayDays());
             compareDate(calendar.getTime(), redPacketRecord,packet);
+            redPacketRecord.setArrivalTime(calendar.getTime());
         }
         redPacketRecord.setType(packet.getType());
         redPacketRecord.setMerchantNo(packet.getMerchantNo());

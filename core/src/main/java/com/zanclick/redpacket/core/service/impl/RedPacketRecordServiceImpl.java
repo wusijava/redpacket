@@ -24,8 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * @author wusi
- * @date 2020-12-07 14:27:02
+ * @author admin
+ * @date 2020-12-10 10:25:42
  **/
 @Service
 @Slf4j
@@ -51,6 +51,11 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
     @Override
     protected BaseMapper<RedPacketRecord, Long> getBaseMapper() {
         return redPacketRecordMapper;
+    }
+
+    @Override
+    public RedPacketRecord findByPacketNo(String packetNo) {
+        return redPacketRecordMapper.findByPacketNo(packetNo);
     }
 
     @Override

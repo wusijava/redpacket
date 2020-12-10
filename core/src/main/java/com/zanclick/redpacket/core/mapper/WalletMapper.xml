@@ -147,6 +147,13 @@
         <include refid="table"/>
         WHERE id=#{id}
     </select>
+    <select id="findByUserName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE user_name=#{userName}
+    </select>
 
     <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.Wallet">
         UPDATE

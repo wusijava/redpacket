@@ -23,4 +23,9 @@ public class WalletServiceImpl extends BaseMybatisServiceImpl<Wallet,Long> imple
     protected BaseMapper<Wallet, Long> getBaseMapper() {
         return walletMapper;
     }
+
+    @Override
+    public Wallet findByUserName(String userName) {
+        return walletMapper.findByUserName(userName);
+    }
 }
