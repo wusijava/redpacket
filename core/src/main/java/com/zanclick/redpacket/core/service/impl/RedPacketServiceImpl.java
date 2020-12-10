@@ -66,8 +66,8 @@ public class RedPacketServiceImpl extends BaseMybatisServiceImpl<RedPacket,Long>
         transfer.setRemark("XXX的红包");
         transfer.setPayer_show_name("点赞科技有限公司");
         transfer.setPayee_real_name(query.getReceiveName());
-        //AlipayFundTransToaccountTransferResponse response = AuthorizePayUtil.transfer(client, transfer);
-        if (true) {
+        AlipayFundTransToaccountTransferResponse response = AuthorizePayUtil.transfer(client, transfer);
+        if (response.isSuccess()) {
             query.setTotalAmount(MoneyUtils.subtract(query.getTotalAmount(),money));
             query.setCanWithdrawAmount(MoneyUtils.subtract(query.getCanWithdrawAmount(),money));
             walletService.updateById(query);
