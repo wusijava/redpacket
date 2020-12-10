@@ -17,6 +17,7 @@ public interface RedPacketService extends BaseService<RedPacket, Long> {
 
     RedPacket findByPacketNo(String packetNo);
 
-    RedPacket selectByOutTradeNo(String outTradeNo);
+    RedPacket selectBybrwOrdNo(String outTradeNo);
+
 
 }
