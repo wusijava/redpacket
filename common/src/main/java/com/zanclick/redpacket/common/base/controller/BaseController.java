@@ -8,6 +8,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,4 +70,18 @@ public abstract class BaseController {
         return map;
     }
 
+    /**
+     * 获取请求数据
+     *
+     * @param request
+     */
+    public String getRequestString(HttpServletRequest request) throws IOException {
+        BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+        StringBuilder sb = new StringBuilder();
+        String inputStr;
+        while ((inputStr = streamReader.readLine()) != null){
+            sb.append(inputStr);
+        }
+        return sb.toString();
+    }
 }

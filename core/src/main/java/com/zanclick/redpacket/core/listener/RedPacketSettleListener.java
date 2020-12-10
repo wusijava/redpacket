@@ -30,34 +30,34 @@ public class RedPacketSettleListener extends BaseListener {
 
     @JmsListener(destination = RedPacketContents.REDPACKET_SETTLE_MESSAGE)
     public void getMessage(String message) {
-        log.error("开始进行酬金打款, outTradeNo:{}", message);
+        log.error("开始进行酬金打款, brwOrdNo:{}", message);
         JSONObject object = JSONObject.parseObject(message);
-        String outTradeNo = object.getString("outTradeNo");
-        if (DataUtils.isEmpty(outTradeNo)) {
-            log.error("和包借款订单号错误:{}", outTradeNo);
+        String brwOrdNo = object.getString("brwOrdNo");
+        if (DataUtils.isEmpty(brwOrdNo)) {
+            log.error("和包借款订单号错误:{}", brwOrdNo);
             return;
         }
         try {
-            RedPacket redPacket = redPacketService.selectByOutTradeNo(outTradeNo);
+            RedPacket redPacket = redPacketService.selectBybrwOrdNo(brwOrdNo);
             if (DataUtils.isEmpty(redPacket)) {
-                log.error("酬金打款失败,数据不存在:{}", outTradeNo);
+                log.error("酬金打款失败,数据不存在:{}", brwOrdNo);
                 return;
             }
             if (redPacket.isSuccess()) {
-                log.error("酬金打款失败,已打款成功:{}", outTradeNo);
+                log.error("酬金打款失败,已打款成功:{}", brwOrdNo);
                 return;
             }
             if (redPacket.isWaiting()) {
-                log.error("酬金打款失败,正在打款中:{}", outTradeNo);
+                log.error("酬金打款失败,正在打款中:{}", brwOrdNo);
                 return;
             }
             if (redPacket.isRefund()) {
-                log.error("酬金打款失败,用户已退单:{}", outTradeNo);
+                log.error("酬金打款失败,用户已退单:{}", brwOrdNo);
                 return;
             }
             redPacketRecordService.settle(redPacket);
         } catch (Exception e) {
-            log.error("酬金打款异常:{},{}", outTradeNo, e);
+            log.error("酬金打款异常:{},{}", brwOrdNo, e);
             //super.sendMsgAgain(object, RebateContents.REBATE_SETTLE_MESSAGE,true);
         }
     }

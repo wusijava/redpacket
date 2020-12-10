@@ -6,6 +6,7 @@ import com.zanclick.redpacket.common.base.dao.mybatis.BaseMapper;
 import com.zanclick.redpacket.common.base.service.impl.BaseMybatisServiceImpl;
 import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.common.utils.DateUtils;
+import com.zanclick.redpacket.common.utils.StringUtils;
 import com.zanclick.redpacket.core.dto.DataList;
 import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.entity.RedPacketRecord;
@@ -87,7 +88,7 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
             //请求和包下单接口
             String dataList = getDataLists(redPacket.getTradeNo(), redPacket.getAmount(), redPacket.getTitle());
             String data = ThreeDesUtils.getHBData(orderId, mchCode, "测试", redPacket.getSellerNo(), redPacket.getSellerNo(), redPacket.getAmount(),
-                    redPacket.getTradeNo(), DateUtils.formatDate(redPacket.getCreateTime(),DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS), redPacket.getProvinceCode(), serect, dataList);
+                    redPacket.getBrwOrdNo(), DateUtils.formatDate(redPacket.getCreateTime(),DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS), redPacket.getProvinceCode(), serect, dataList);
             log.info("data为：{}", data);
             String sign = ThreeDesUtils.getSign(appKey, data, orderId, today);
             Map<String, String> parmMap = new HashMap<>(7);
@@ -100,29 +101,30 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
             parmMap.put("dealer-id", mchCode);
             //测试环境
             String requestUrl = host + hbPay;
-            String result = HttpClientUtil.postPayMsg(requestUrl, parmMap);
-            HbOrderResponse response = JSON.parseObject(result, HbOrderResponse.class);
-            log.info("和包支付实时下单请求结果为：{}", JSONObject.toJSONString(result));
+//            String result = HttpClientUtil.postPayMsg(requestUrl, parmMap);
+//            HbOrderResponse response = JSON.parseObject(result, HbOrderResponse.class);
+//            log.info("和包支付实时下单请求结果为：{}", JSONObject.toJSONString(result));
             //结果校验
-            if (response.isSuccess()) {
+//            if (response.isSuccess()) {
+            if (true) {
                 //修改酬金表和记录表 打款中
-//                log.error("打款中,brwOrdNo:{},amount:{}", redPacket.getBrwOrdNo(), redPacket.getAmount());
-                redPacket.setState(RedPacket.State.WAITING.getCode());
-                rebateRecord.setState(RedPacketRecord.State.WAITING.getCode());
+                log.error("打款中,brwOrdNo:{},amount:{}", redPacket.getBrwOrdNo(), redPacket.getAmount());
+                redPacket.setState(RedPacket.State.RECEIVED.getCode());
+                rebateRecord.setState(RedPacketRecord.State.RECEIVED.getCode());
                 redPacketService.updateById(redPacket);
                 this.updateById(rebateRecord);
                 return true;
             } else {
 //                log.error("打款失败:brwOrdNo:{},{}", redPacket.getBrwOrdNo(), JSONObject.toJSONString(result));
                 redPacket.setState(RedPacket.State.FAIL.getCode());
-                rebateRecord.setReason(response.getMessage());
+//                rebateRecord.setReason(response.getMessage());
                 rebateRecord.setState(RedPacketRecord.State.FAIL.getCode());
                 redPacketService.updateById(redPacket);
                 this.updateById(rebateRecord);
                 return false;
             }
         } catch (Exception e) {
-//            log.error("和包支付实时下单请求结果为:{},{}", redPacket.getBrwOrdNo(), e);
+            log.error("和包支付实时下单请求结果为:{},{}", redPacket.getBrwOrdNo(), e);
             redPacket.setState(RedPacket.State.FAIL.getCode());
             rebateRecord.setReason("打款请求异常");
             rebateRecord.setState(RedPacketRecord.State.FAIL.getCode());
@@ -135,7 +137,30 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
 
     @Override
     public RedPacketRecord createRebateRecord(RedPacket rebate, Integer state) {
-        return null;
+        RedPacketRecord redPacketRecord = new RedPacketRecord();
+        redPacketRecord.setBrwOrdNo(rebate.getBrwOrdNo());
+        redPacketRecord.setCreateTime(rebate.getCreateTime());
+        if (!RedPacketRecord.State.WAITING.getCode().equals(state)) {
+            redPacketRecord.setOutTradeNo(StringUtils.getTradeNo());
+            redPacketRecord.setTradeNo(StringUtils.getTradeNo());
+        }
+        redPacketRecord.setTradeNo(rebate.getTradeNo());
+        redPacketRecord.setOutTradeNo(rebate.getOutTradeNo());
+        redPacketRecord.setAmount(rebate.getAmount());
+        redPacketRecord.setTitle(rebate.getTitle());
+        redPacketRecord.setAppId(rebate.getAppId());
+        redPacketRecord.setState(state);
+        redPacketRecord.setType(rebate.getType());
+        redPacketRecord.setMerchantNo(rebate.getMerchantNo());
+        redPacketRecord.setCashierPhoneNo(rebate.getCashierPhoneNo());
+        redPacketRecord.setSellerNo(rebate.getSellerNo());
+        redPacketRecord.setAccountNo(rebate.getAccountNo());
+        redPacketRecord.setProvinceName(rebate.getProvinceName());
+        redPacketRecord.setProvinceCode(rebate.getProvinceCode());
+        redPacketRecord.setCollectAccountNumber(rebate.getCollectAccountNumber());
+        redPacketRecord.setCashierNo(rebate.getCashierNo());
+        this.insert(redPacketRecord);
+        return redPacketRecord;
     }
 
     private String getDataLists(String tradeNo, String amount, String productNm) {

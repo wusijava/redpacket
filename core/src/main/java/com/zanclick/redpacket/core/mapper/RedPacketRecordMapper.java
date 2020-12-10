@@ -12,4 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface RedPacketRecordMapper extends BaseMapper<RedPacketRecord,Long> {
 
     RedPacketRecord findByPacketNo(String packetNo);
+
+    RedPacketRecord findByOutTradeNo(String outTradeNo);
 }

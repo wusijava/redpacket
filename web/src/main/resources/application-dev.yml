@@ -86,6 +86,11 @@ serverPath: D:\\excel\\
 #excelOrZipUrl: http://172.16.4.110:8888/web/v1/file/downloadExcel/
 excelOrZipUrl: http://dzrisk.ngrok.zanclick.cn/web/v1/file/downloadExcel/
 
-
-
+lx:
+  appKey: hM1tQouG0ZxAmJXcxSSH4GIIsP65bkrG
+  mchCode: MCH202003230013
+  serect: qOpVof0dqHsCRcpOhXmYomr8
+  host: https://payt.bld365.com
+  method:
+    hbPay: /api/payment/v1/order-hb
 

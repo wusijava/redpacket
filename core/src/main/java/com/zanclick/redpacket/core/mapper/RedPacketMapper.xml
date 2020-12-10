@@ -291,12 +291,12 @@
         <include refid="table"/>
         WHERE id=#{id}
     </select>
-    <select id="selectByOutTradeNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectBybrwOrdNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         <include refid="table"/>
-        WHERE `out_trade_no`=#{outTradeNo}
+        WHERE `brw_ord_no`=#{brwOrdNo}
     </select>
 
 
