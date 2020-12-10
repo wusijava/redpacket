@@ -33,4 +33,9 @@ public class RedPacketServiceImpl extends BaseMybatisServiceImpl<RedPacket,Long>
         }
         return amount;
     }
+
+    @Override
+    public RedPacket selectByOutTradeNo(String outTradeNo) {
+        return redPacketMapper.selectByOutTradeNo(outTradeNo);
+    }
 }

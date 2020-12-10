@@ -12,6 +12,8 @@ import java.util.Date;
 @Data
 public class RedPacketVo {
 
+    private Integer index;
+
     private Long id;
     /**
      * 红包金额
@@ -92,4 +94,37 @@ public class RedPacketVo {
 
     private String tradingTime;
 
+    private String typeDesc;
+
+
+
+    public static String[] headers = {
+            "序号",
+            "订单号",
+            "授权单号",
+            "交易时间",
+            "省份",
+            "下单营业员编号",
+            "下单营业员手机号",
+            "办理手机号",
+            "酬金金额",
+            "套餐标题",
+            "创建时间",
+            "打款状态",
+    };
+
+    public static String[] keys = {
+            "index",
+            "tradeNo",
+            "outTradeNo",
+            "orderTime",
+            "provinceName",
+            "cashierNo",
+            "cashierPhoneNo",
+            "customPhone",
+            "amount",
+            "title",
+            "createTime",
+            "stateDesc",
+    };
 }

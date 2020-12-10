@@ -1,6 +1,7 @@
 package com.zanclick.redpacket.core.service;
 
 import com.zanclick.redpacket.common.base.service.BaseService;
+import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.entity.RedPacketRecord;
 
 /**
@@ -9,4 +10,12 @@ import com.zanclick.redpacket.core.entity.RedPacketRecord;
  **/
 public interface RedPacketRecordService extends BaseService<RedPacketRecord,Long> {
 
+    /**
+     * 酬金打款
+     * @param redPacket
+     * @return
+     */
+    Boolean settle(RedPacket redPacket);
+
+    RedPacketRecord createRebateRecord(RedPacket rebate,Integer state);
 }

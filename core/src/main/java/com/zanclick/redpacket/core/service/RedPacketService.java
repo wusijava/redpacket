@@ -11,4 +11,7 @@ public interface RedPacketService extends BaseService<RedPacket,Long> {
 
 
     String selectSunAmount(RedPacket redPacket);
+
+    RedPacket selectByOutTradeNo(String outTradeNo);
+
 }
