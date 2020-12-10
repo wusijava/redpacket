@@ -81,4 +81,9 @@ public class RedPacketServiceImpl extends BaseMybatisServiceImpl<RedPacket,Long>
             transferRecordService.insert(record);
         }
     }
+
+    @Override
+    public RedPacket findByPacketNo(String packetNo) {
+        return redPacketMapper.findByPacketNo(packetNo);
+    }
 }
