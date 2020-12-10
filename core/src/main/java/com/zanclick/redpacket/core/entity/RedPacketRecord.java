@@ -26,6 +26,10 @@ public class RedPacketRecord implements Identifiable<Long> {
    */
   private String outTradeNo;
   /**
+   * 借款订单号
+   */
+  private String brwOrdNo;
+  /**
    * 红包标题
    */
   private String title;
@@ -110,7 +114,10 @@ public class RedPacketRecord implements Identifiable<Long> {
 
   private String customPhone;
   private String packetNo;
-
+  /**
+   * 到账时间
+   */
+  private Date arrivalTime;
   /**
    * 领取的登录账号
    */

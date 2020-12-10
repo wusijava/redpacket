@@ -26,6 +26,10 @@ public class RedPacket implements Identifiable<Long> {
    */
   private String outTradeNo;
   /**
+   * 借款订单号
+   */
+  private String brwOrdNo;
+  /**
    * 红包标题
    */
   private String title;
@@ -64,9 +68,13 @@ public class RedPacket implements Identifiable<Long> {
 
 
   private Date orderTime;
-
+  /**
+   * 延期到账天数
+   */
   private Integer delayDays;
-
+  /**
+   * 是否隔月到账 1是  0否
+   */
   private Integer isNextMonthSettle;
   /**
    * 红包领取账号

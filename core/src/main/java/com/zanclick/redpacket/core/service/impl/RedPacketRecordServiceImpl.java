@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author wusi
- * @date 2020-12-07 14:27:02
+ * @author admin
+ * @date 2020-12-10 10:25:42
  **/
 @Service
 public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacketRecord,Long> implements RedPacketRecordService {

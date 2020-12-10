@@ -5,8 +5,8 @@ import com.zanclick.redpacket.core.entity.RedPacket;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author 27720
- * @date 2020-12-08 10:20:18
+ * @author admin
+ * @date 2020-12-10 10:23:51
  **/
 @Mapper
 public interface RedPacketMapper extends BaseMapper<RedPacket,Long> {

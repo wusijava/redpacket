@@ -6,6 +6,7 @@
             <result column="amount" property="amount" jdbcType="VARCHAR"/>
             <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
             <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+            <result column="brw_ord_no" property="brwOrdNo" jdbcType="VARCHAR"/>
             <result column="title" property="title" jdbcType="VARCHAR"/>
             <result column="app_id" property="appId" jdbcType="VARCHAR"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
@@ -33,6 +34,7 @@
             `amount`,
             `trade_no`,
             `out_trade_no`,
+            `brw_ord_no`,
             `title`,
             `app_id`,
             `state`,
@@ -67,6 +69,9 @@
                     </if>
                     <if test="outTradeNo != null and outTradeNo != ''">
                         AND `out_trade_no`=#{outTradeNo}
+                    </if>
+                    <if test="brwOrdNo != null and brwOrdNo != ''">
+                        AND `brw_ord_no`=#{brwOrdNo}
                     </if>
                     <if test="title != null and title != ''">
                         AND `title`=#{title}
@@ -170,6 +175,7 @@
             `amount`,
             `trade_no`,
             `out_trade_no`,
+            `brw_ord_no`,
             `title`,
             `app_id`,
             `state`,
@@ -195,6 +201,7 @@
             #{amount},
             #{tradeNo},
             #{outTradeNo},
+            #{brwOrdNo},
             #{title},
             #{appId},
             #{state},
@@ -225,6 +232,7 @@
             `amount`,
             `trade_no`,
             `out_trade_no`,
+            `brw_ord_no`,
             `title`,
             `app_id`,
             `state`,
@@ -252,6 +260,7 @@
             #{cm.amount},
             #{cm.tradeNo},
             #{cm.outTradeNo},
+            #{cm.brwOrdNo},
             #{cm.title},
             #{cm.appId},
             #{cm.state},
@@ -295,6 +304,9 @@
             </if>
             <if test="outTradeNo != null and outTradeNo != ''">
                  `out_trade_no`=#{outTradeNo},
+            </if>
+            <if test="brwOrdNo != null and brwOrdNo != ''">
+                 `brw_ord_no`=#{brwOrdNo},
             </if>
             <if test="title != null and title != ''">
                  `title`=#{title},

@@ -6,6 +6,7 @@
             <result column="amount" property="amount" jdbcType="VARCHAR"/>
             <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
             <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+            <result column="brw_ord_no" property="brwOrdNo" jdbcType="VARCHAR"/>
             <result column="title" property="title" jdbcType="VARCHAR"/>
             <result column="app_id" property="appId" jdbcType="VARCHAR"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
@@ -27,6 +28,7 @@
             <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP"/>
             <result column="custom_phone" property="customPhone" jdbcType="VARCHAR"/>
             <result column="packet_no" property="packetNo" jdbcType="VARCHAR"/>
+            <result column="arrival_time" property="arrivalTime" jdbcType="TIMESTAMP"/>
             <result column="user_name" property="userName" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -36,6 +38,7 @@
             `amount`,
             `trade_no`,
             `out_trade_no`,
+            `brw_ord_no`,
             `title`,
             `app_id`,
             `state`,
@@ -57,6 +60,7 @@
             `trading_time`,
             `custom_phone`,
             `packet_no`,
+            `arrival_time`,
             `user_name`
     </sql>
     <sql id="Base_Where_Clause">
@@ -73,6 +77,9 @@
                     </if>
                     <if test="outTradeNo != null and outTradeNo != ''">
                         AND `out_trade_no`=#{outTradeNo}
+                    </if>
+                    <if test="brwOrdNo != null and brwOrdNo != ''">
+                        AND `brw_ord_no`=#{brwOrdNo}
                     </if>
                     <if test="title != null and title != ''">
                         AND `title`=#{title}
@@ -137,6 +144,9 @@
                     <if test="packetNo != null and packetNo != ''">
                         AND `packet_no`=#{packetNo}
                     </if>
+                    <if test="arrivalTime != null">
+                        AND `arrival_time`=#{arrivalTime}
+                    </if>
                     <if test="userName != null and userName != ''">
                         AND `user_name`=#{userName}
                     </if>
@@ -185,6 +195,7 @@
             `amount`,
             `trade_no`,
             `out_trade_no`,
+            `brw_ord_no`,
             `title`,
             `app_id`,
             `state`,
@@ -206,6 +217,7 @@
             `trading_time`,
             `custom_phone`,
             `packet_no`,
+            `arrival_time`,
             `user_name`
         )
         VALUES(
@@ -213,6 +225,7 @@
             #{amount},
             #{tradeNo},
             #{outTradeNo},
+            #{brwOrdNo},
             #{title},
             #{appId},
             #{state},
@@ -234,6 +247,7 @@
             #{tradingTime},
             #{customPhone},
             #{packetNo},
+            #{arrivalTime},
             #{userName}
         )
     </insert>
@@ -246,6 +260,7 @@
             `amount`,
             `trade_no`,
             `out_trade_no`,
+            `brw_ord_no`,
             `title`,
             `app_id`,
             `state`,
@@ -267,6 +282,7 @@
             `trading_time`,
             `custom_phone`,
             `packet_no`,
+            `arrival_time`,
             `user_name`
         )
         VALUES
@@ -276,6 +292,7 @@
             #{cm.amount},
             #{cm.tradeNo},
             #{cm.outTradeNo},
+            #{cm.brwOrdNo},
             #{cm.title},
             #{cm.appId},
             #{cm.state},
@@ -297,6 +314,7 @@
             #{cm.tradingTime},
             #{cm.customPhone},
             #{cm.packetNo},
+            #{cm.arrivalTime},
             #{cm.userName}
             )
         </foreach>
@@ -329,6 +347,9 @@
             </if>
             <if test="outTradeNo != null and outTradeNo != ''">
                  `out_trade_no`=#{outTradeNo},
+            </if>
+            <if test="brwOrdNo != null and brwOrdNo != ''">
+                 `brw_ord_no`=#{brwOrdNo},
             </if>
             <if test="title != null and title != ''">
                  `title`=#{title},
@@ -392,6 +413,9 @@
             </if>
             <if test="packetNo != null and packetNo != ''">
                  `packet_no`=#{packetNo},
+            </if>
+            <if test="arrivalTime != null">
+                 `arrival_time`=#{arrivalTime},
             </if>
             <if test="userName != null and userName != ''">
                  `user_name`=#{userName},
