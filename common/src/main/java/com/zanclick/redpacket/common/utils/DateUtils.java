@@ -35,6 +35,11 @@ public class DateUtils {
         LocalDateTime localDateTime = dateToDateTime(date);
         return formatter.format(localDateTime);
     }
+    public static String yyyy_MM_dd(Date date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(yyyy_MM_dd);
+        LocalDateTime localDateTime = dateToDateTime(date);
+        return formatter.format(localDateTime);
+    }
 
     /**
      * 将日期转为字符串 yyyyMMddHHmmss

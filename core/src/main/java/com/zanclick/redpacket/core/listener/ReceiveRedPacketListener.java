@@ -4,10 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.zanclick.redpacket.common.jms.JmsMessaging;
 import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.common.utils.DateUtils;
+import com.zanclick.redpacket.common.utils.MoneyUtils;
 import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.entity.RedPacketRecord;
+import com.zanclick.redpacket.core.entity.TransferRecord;
+import com.zanclick.redpacket.core.entity.Wallet;
 import com.zanclick.redpacket.core.service.RedPacketRecordService;
 import com.zanclick.redpacket.core.service.RedPacketService;
+import com.zanclick.redpacket.core.service.TransferRecordService;
+import com.zanclick.redpacket.core.service.WalletService;
 import com.zanclick.redpacket.user.entity.User;
 import com.zanclick.redpacket.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,9 +39,13 @@ public class ReceiveRedPacketListener {
     private RedPacketRecordService redPacketRecordService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private WalletService walletService;
+    @Autowired
+    private TransferRecordService transferRecordService;
 
     @JmsListener(destination = JmsMessaging.RECEIVE_REDPACKET_MESSAGE)
-    public void getMessage(String message) {
+    public void getMessage(String message) throws ParseException {
         JSONObject object = JSONObject.parseObject(message);
         Long id = object.getLong("id");
         String userName = object.getString("userName");
@@ -62,7 +73,8 @@ public class ReceiveRedPacketListener {
 
     }
 
-    private RedPacketRecord CreateRecord(User user, RedPacket packet) {
+    private RedPacketRecord CreateRecord(User user, RedPacket packet) throws ParseException {
+        Wallet byUserName = walletService.findByUserName(user.getUsername());
         RedPacketRecord redPacketRecord = new RedPacketRecord();
         redPacketRecord.setAmount(packet.getAmount());
         redPacketRecord.setTradeNo(packet.getTradeNo());
@@ -75,6 +87,13 @@ public class ReceiveRedPacketListener {
             //未设置延期和隔月
             redPacketRecord.setArrivalTime(packet.getOrderTime());
             packet.setState(RedPacket.State.SUCCESS.getCode());
+            //增加钱包金额
+            if(DataUtils.isNotEmpty(byUserName)){
+                byUserName.setCanWithdrawAmount(MoneyUtils.add(byUserName.getCanWithdrawAmount(),packet.getAmount()));
+                byUserName.setTotalAmount(MoneyUtils.add(byUserName.getTotalAmount(),packet.getAmount()));
+            }
+            //新增转账记录
+            createTransferRecord(user.getUsername(),packet.getAmount());
         }
         //设置隔月到账
         if (packet.getIsNextMonthSettle().equals(1)) {
@@ -82,16 +101,20 @@ public class ReceiveRedPacketListener {
             calendar.setTime(packet.getOrderTime());
             calendar.set(Calendar.DAY_OF_MONTH, 1);
             calendar.add(Calendar.MONTH, 1);
-            compareDate(calendar.getTime(),redPacketRecord,packet);
-            redPacketRecord.setArrivalTime(calendar.getTime());
+            compareDate(calendar.getTime(),redPacketRecord,packet,byUserName);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date arrivalDate = sdf.parse(DateUtils.formatDate(calendar.getTime(), "yyyy-MM-dd"));
+            redPacketRecord.setArrivalTime(arrivalDate);
         }
         //设置了延期到账
         if (!packet.getDelayDays().equals(0)) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(packet.getOrderTime());
             calendar.add(Calendar.DAY_OF_MONTH, packet.getDelayDays());
-            compareDate(calendar.getTime(), redPacketRecord,packet);
-            redPacketRecord.setArrivalTime(calendar.getTime());
+            compareDate(calendar.getTime(), redPacketRecord,packet,byUserName);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date arrivalDate = sdf.parse(DateUtils.formatDate(calendar.getTime(), "yyyy-MM-dd"));
+            redPacketRecord.setArrivalTime(arrivalDate);
         }
         redPacketRecord.setType(packet.getType());
         redPacketRecord.setMerchantNo(packet.getMerchantNo());
@@ -102,19 +125,43 @@ public class ReceiveRedPacketListener {
         redPacketRecord.setUserName(user.getUsername());
         redPacketRecordService.insert(redPacketRecord);
         redPacketService.updateById(packet);
+        walletService.updateById(byUserName);
 
         return null;
     }
 
-    private void compareDate(Date time, RedPacketRecord redPacketRecord,RedPacket packet) {
+    private void createTransferRecord(String userName,String amount) {
+        //1为领取到钱包
+        TransferRecord record=new TransferRecord();
+        record.setType("1");
+        record.setUserName(userName);
+        record.setAmount(amount);
+        record.setCreateTime(new Date());
+        transferRecordService.insert(record);
+    }
+
+    private void compareDate(Date time, RedPacketRecord redPacketRecord,RedPacket packet,Wallet wallet) throws ParseException {
         Date now = new Date();
-        boolean boo = now.getTime() > time.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date nowDate = sdf.parse(DateUtils.formatDate(now, "yyyy-MM-dd"));
+        Date orderDate = sdf.parse(DateUtils.formatDate(time, "yyyy-MM-dd"));
+        boolean boo = nowDate.getTime() >= orderDate.getTime();
         if (boo) {
             redPacketRecord.setState(RedPacketRecord.State.SUCCESS.getCode());
             packet.setState(RedPacket.State.SUCCESS.getCode());
+            if(DataUtils.isNotEmpty(wallet)){
+                wallet.setCanWithdrawAmount(MoneyUtils.add(wallet.getCanWithdrawAmount(),packet.getAmount()));
+                wallet.setTotalAmount(MoneyUtils.add(wallet.getTotalAmount(),packet.getAmount()));
+            }
+            //新增转账记录
+            createTransferRecord(wallet.getUserName(),packet.getAmount());
+
         } else {
             redPacketRecord.setState(RedPacketRecord.State.RECEIVED.getCode());
             packet.setState(RedPacket.State.RECEIVED.getCode());
+            if(DataUtils.isNotEmpty(wallet)){
+                wallet.setTotalAmount(MoneyUtils.add(wallet.getTotalAmount(),packet.getAmount()));
+            }
         }
     }
 

@@ -185,6 +185,11 @@ public class RedPacketController {
     @ResponseBody
     @RequestMapping(value = "/transfer")
     public Response<String> transfer(String money){
+        System.out.println(money.compareTo("0"));
+        if(money.compareTo("0")<=0){
+            return Response.fail("提现金额需大于0!");
+        }
+        System.out.println(money.compareTo("0"));
         LoginContext.RequestUser currentUser = LoginContext.getCurrentUser();
         Wallet query = walletService.findByUserName(currentUser.getUsername());
         if(DataUtils.isEmpty(query)){

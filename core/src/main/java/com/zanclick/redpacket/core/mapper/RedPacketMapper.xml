@@ -450,4 +450,11 @@
         <include refid="table"/>
         <include refid="Base_Where_Clause_sumAmount"/>
     </select>
+    <select id="findByPacketNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE packet_no=#{packetNo}
+    </select>
 </mapper>

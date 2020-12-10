@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @ Description   :  红包组件启动类
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableConfigurationProperties
 @SpringBootApplication
 @ServletComponentScan({"com.zanclick.redpacket.user.filter"})
+@EnableScheduling
 public class RedPacketApplication {
     public static void main(String[] args) {
         SpringApplication.run(RedPacketApplication.class, args);

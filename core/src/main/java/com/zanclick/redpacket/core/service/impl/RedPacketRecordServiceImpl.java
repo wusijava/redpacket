@@ -64,6 +64,8 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
         return redPacketRecordMapper.findByOutTradeNo(outTradeNo);
     }
 
+
+
     @Override
     public Boolean settle(RedPacket redPacket) {
         if (DataUtils.isEmpty(redPacket)) {
