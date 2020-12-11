@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface TransferRecordMapper extends BaseMapper<TransferRecord,Long> {
-
+    TransferRecord findByPacketNo(String packetNo);
 
 }

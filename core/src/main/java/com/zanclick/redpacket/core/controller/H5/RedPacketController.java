@@ -5,18 +5,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.zanclick.redpacket.common.entity.Response;
 import com.zanclick.redpacket.common.jms.JmsMessaging;
 import com.zanclick.redpacket.common.jms.SendMessage;
-import com.zanclick.redpacket.common.utils.DataUtils;
-import com.zanclick.redpacket.common.utils.LoginContext;
-import com.zanclick.redpacket.common.utils.MoneyUtils;
-import com.zanclick.redpacket.common.utils.StringUtils;
+import com.zanclick.redpacket.common.utils.*;
 import com.zanclick.redpacket.core.entity.CorrelationConfiguration;
 import com.zanclick.redpacket.core.entity.RedPacket;
+import com.zanclick.redpacket.core.entity.TransferRecord;
 import com.zanclick.redpacket.core.entity.Wallet;
 import com.zanclick.redpacket.core.query.RedPacketQuery;
+import com.zanclick.redpacket.core.query.TransferRecordQuery;
 import com.zanclick.redpacket.core.service.CorrelationConfigurationService;
 import com.zanclick.redpacket.core.service.RedPacketService;
+import com.zanclick.redpacket.core.service.TransferRecordService;
 import com.zanclick.redpacket.core.service.WalletService;
 import com.zanclick.redpacket.core.vo.RedPacketVo;
+import com.zanclick.redpacket.core.vo.h5.TransferRecordVo;
 import com.zanclick.redpacket.core.vo.h5.WalletVO;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,8 @@ public class RedPacketController {
     private WalletService walletService;
     @Autowired
     private CorrelationConfigurationService correlationConfigurationService;
+    @Autowired
+    private TransferRecordService transferRecordService;
 
     @ApiOperation("查询红包")
     @RequestMapping(value = "queryRedPacket")
@@ -225,5 +228,44 @@ public class RedPacketController {
             SendMessage.sendMessage(JmsMessaging.RECEIVE_REDPACKET_MESSAGE, map.toJSONString());
         }
         return Response.ok("批量领取成功！");
+    }
+
+    //领取明细
+    @ApiOperation("批量领取红包")
+    @RequestMapping(value = "getReceiveList")
+    @ResponseBody
+    public Response<Page<TransferRecordVo>> getReceiveList(TransferRecordQuery query){
+        LoginContext.RequestUser currentUser = LoginContext.getCurrentUser();
+        if (DataUtils.isEmpty(query.getLimit())) {
+            query.setLimit(1);
+        }
+        if (DataUtils.isEmpty(query.getPage())) {
+            query.setPage(0);
+        }
+        query.setUserName(currentUser.getUsername());
+        Pageable pageable = PageRequest.of(query.getPage(), query.getLimit());
+        Page<TransferRecord> page = transferRecordService.queryPage(query, pageable);
+        List<TransferRecordVo> voList = new ArrayList<>();
+        if (DataUtils.isEmpty(page)) {
+            return Response.fail("无数据");
+        }
+        for (TransferRecord record : page.getContent()) {
+            voList.add(getTransferVo(record));
+        }
+        Page<TransferRecordVo> voPage = new PageImpl<>(voList, pageable, page.getTotalElements());
+        return Response.ok(voPage);
+
+    }
+
+    private TransferRecordVo getTransferVo(TransferRecord record) {
+        TransferRecordVo vo=new TransferRecordVo();
+        vo.setAmount(record.getAmount());
+        vo.setCreateTime(DateUtils.formatDate(record.getCreateTime(), "yyyy-MM-dd"));
+        vo.setTradeNo(record.getTradeNo());
+        vo.setSettleDesc(record.getStateDesc());
+        if(DataUtils.isNotEmpty(record.getReceiveNo())){
+            vo.setReceiveNo("领取账号:"+record.getReceiveNo());
+        }
+        return vo;
     }
 }

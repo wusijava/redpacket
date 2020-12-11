@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author wusi
- * @date 2020-12-07 14:33:25
+ * @author admin
+ * @date 2020-12-11 10:06:51
  **/
 @Service
 public class TransferRecordServiceImpl extends BaseMybatisServiceImpl<TransferRecord,Long> implements TransferRecordService {
@@ -22,5 +22,10 @@ public class TransferRecordServiceImpl extends BaseMybatisServiceImpl<TransferRe
     @Override
     protected BaseMapper<TransferRecord, Long> getBaseMapper() {
         return transferRecordMapper;
+    }
+
+    @Override
+    public TransferRecord findByPacketNo(String packetNo) {
+        return transferRecordMapper.findByPacketNo(packetNo);
     }
 }

@@ -5,9 +5,12 @@ import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.common.utils.MoneyUtils;
 import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.entity.RedPacketRecord;
+import com.zanclick.redpacket.core.entity.TransferRecord;
 import com.zanclick.redpacket.core.entity.Wallet;
+import com.zanclick.redpacket.core.mapper.TransferRecordMapper;
 import com.zanclick.redpacket.core.service.RedPacketRecordService;
 import com.zanclick.redpacket.core.service.RedPacketService;
+import com.zanclick.redpacket.core.service.TransferRecordService;
 import com.zanclick.redpacket.core.service.WalletService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class SettleJobs {
     private RedPacketService redPacketService;
     @Autowired
     private WalletService walletService;
+    @Autowired
+    private TransferRecordService transferRecordService;
 
     @Scheduled(cron = "0 32 11 * * ?")
     public void cronJobs() {
@@ -54,6 +59,13 @@ public class SettleJobs {
                if(DataUtils.isNotEmpty(byPacketNo)){
                    byPacketNo.setState(3);
                    redPacketService.updateById(byPacketNo);
+               }
+               //更新转账记录状态
+                TransferRecord transferRecord = transferRecordService.findByPacketNo(packet.getPacketNo());
+               if(DataUtils.isNotEmpty(transferRecord)){
+                   //1为已到账
+                   transferRecord.setState(1);
+                   transferRecordService.updateById(transferRecord);
                }
             }
         }

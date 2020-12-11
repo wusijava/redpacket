@@ -93,7 +93,7 @@ public class ReceiveRedPacketListener {
                 byUserName.setTotalAmount(MoneyUtils.add(byUserName.getTotalAmount(),packet.getAmount()));
             }
             //新增转账记录
-            createTransferRecord(user.getUsername(),packet.getAmount());
+            createTransferRecord(user.getUsername(),packet.getAmount(),1,packet.getPacketNo(),packet.getTradeNo());
         }
         //设置隔月到账
         if (packet.getIsNextMonthSettle().equals(1)) {
@@ -130,13 +130,16 @@ public class ReceiveRedPacketListener {
         return null;
     }
 
-    private void createTransferRecord(String userName,String amount) {
+    private void createTransferRecord(String userName,String amount,Integer state,String packetNo,String tradeNo) {
         //1为领取到钱包
         TransferRecord record=new TransferRecord();
         record.setType("1");
         record.setUserName(userName);
         record.setAmount(amount);
         record.setCreateTime(new Date());
+        record.setState(state);
+        record.setPacketNo(packetNo);
+        record.setTradeNo(tradeNo);
         transferRecordService.insert(record);
     }
 
@@ -154,7 +157,7 @@ public class ReceiveRedPacketListener {
                 wallet.setTotalAmount(MoneyUtils.add(wallet.getTotalAmount(),packet.getAmount()));
             }
             //新增转账记录
-            createTransferRecord(wallet.getUserName(),packet.getAmount());
+            createTransferRecord(wallet.getUserName(),packet.getAmount(),1,packet.getPacketNo(),packet.getTradeNo());
 
         } else {
             redPacketRecord.setState(RedPacketRecord.State.RECEIVED.getCode());
@@ -162,6 +165,8 @@ public class ReceiveRedPacketListener {
             if(DataUtils.isNotEmpty(wallet)){
                 wallet.setTotalAmount(MoneyUtils.add(wallet.getTotalAmount(),packet.getAmount()));
             }
+            //新增转账记录
+            createTransferRecord(wallet.getUserName(),packet.getAmount(),2,packet.getPacketNo(),packet.getTradeNo());
         }
     }
 

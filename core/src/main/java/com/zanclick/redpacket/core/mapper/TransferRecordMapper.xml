@@ -9,6 +9,8 @@
             <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
             <result column="receive_no" property="receiveNo" jdbcType="VARCHAR"/>
             <result column="type" property="type" jdbcType="VARCHAR"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
+            <result column="packet_no" property="packetNo" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="table">transfer_record</sql>
@@ -19,7 +21,9 @@
             `create_time`,
             `trade_no`,
             `receive_no`,
-            `type`
+            `type`,
+            `state`,
+            `packet_no`
     </sql>
     <sql id="Base_Where_Clause">
         <where>
@@ -44,6 +48,12 @@
                     </if>
                     <if test="type != null and type != ''">
                         AND `type`=#{type}
+                    </if>
+                    <if test="state != null">
+                        AND `state`=#{state}
+                    </if>
+                    <if test="packetNo != null and packetNo != ''">
+                        AND `packet_no`=#{packetNo}
                     </if>
             </trim>
         </where>
@@ -92,7 +102,9 @@
             `create_time`,
             `trade_no`,
             `receive_no`,
-            `type`
+            `type`,
+            `state`,
+            `packet_no`
         )
         VALUES(
             #{id},
@@ -101,7 +113,9 @@
             #{createTime},
             #{tradeNo},
             #{receiveNo},
-            #{type}
+            #{type},
+            #{state},
+            #{packetNo}
         )
     </insert>
 
@@ -115,7 +129,9 @@
             `create_time`,
             `trade_no`,
             `receive_no`,
-            `type`
+            `type`,
+            `state`,
+            `packet_no`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
@@ -126,7 +142,9 @@
             #{cm.createTime},
             #{cm.tradeNo},
             #{cm.receiveNo},
-            #{cm.type}
+            #{cm.type},
+            #{cm.state},
+            #{cm.packetNo}
             )
         </foreach>
     </insert>
@@ -137,6 +155,13 @@
         FROM
         <include refid="table"/>
         WHERE id=#{id}
+    </select>
+    <select id="findByPacketNo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE packet_no=#{packetNo} limit 1
     </select>
 
     <update id="updateById" parameterType="com.zanclick.redpacket.core.entity.TransferRecord">
@@ -160,6 +185,12 @@
             </if>
             <if test="type != null and type != ''">
                  `type`=#{type},
+            </if>
+            <if test="state != null">
+                 `state`=#{state},
+            </if>
+            <if test="packetNo != null and packetNo != ''">
+                 `packet_no`=#{packetNo},
             </if>
         </set>
         WHERE id=#{id}
