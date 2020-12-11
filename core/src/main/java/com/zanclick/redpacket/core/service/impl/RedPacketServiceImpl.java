@@ -83,12 +83,17 @@ public class RedPacketServiceImpl extends BaseMybatisServiceImpl<RedPacket,Long>
     }
 
     @Override
+    public RedPacket selectBybrwOrdNo(String brwOrdNo) {
+        return redPacketMapper.selectBybrwOrdNo(brwOrdNo);
+    }
+
+    @Override
     public RedPacket findByPacketNo(String packetNo) {
         return redPacketMapper.findByPacketNo(packetNo);
     }
 
     @Override
-    public RedPacket selectBybrwOrdNo(String brwOrdNo) {
-        return redPacketMapper.selectBybrwOrdNo(brwOrdNo);
+    public RedPacket selectByOutTradeNo(String outTradeNo) {
+        return redPacketMapper.selectByOutTradeNo(outTradeNo);
     }
 }

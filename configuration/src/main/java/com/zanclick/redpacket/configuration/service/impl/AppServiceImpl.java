@@ -2,11 +2,15 @@ package com.zanclick.redpacket.configuration.service.impl;
 
 import com.zanclick.redpacket.common.base.dao.mybatis.BaseMapper;
 import com.zanclick.redpacket.common.base.service.impl.BaseMybatisServiceImpl;
+import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.configuration.entity.App;
 import com.zanclick.redpacket.configuration.mapper.AppMapper;
 import com.zanclick.redpacket.configuration.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author admin
@@ -26,6 +30,9 @@ public class AppServiceImpl extends BaseMybatisServiceImpl<App,Long> implements 
 
     @Override
     public App queryByAppId(String appId) {
-        return appMapper.queryByAppId(appId);
+        App app = new App();
+        app.setAppId(appId);
+        List<App> appList = this.queryList(app, PageRequest.of(0, 1));
+        return DataUtils.isNotEmpty(appList) ? appList.get(0) : null;
     }
 }

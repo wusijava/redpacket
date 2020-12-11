@@ -5,17 +5,18 @@ package com.zanclick.redpacket.sdk.enums;
  * @author duchong
  * @description 对外接口枚举
  * 方法命名规则  统一前缀.模块名称.模块内操作对象泛称.执行操作
- * 统一前缀 com.zanclick.zcpay
+ * 统一前缀 com.zanclick.redpacket
  * @date 2020-8-22 11:29:45
  */
 public enum ApiMethod {
-    RISK_MERCHANT_CHECK("com.zanclick.riskgo.merchant.risk.merchant", "风险商户校验接口", "1.0"),
-    RISK_TRADE_QUERY("com.zanclick.riskgo.risk.trade.query", "风险查询接口", "1.0"),
-    RISK_STATEMENT("com.zanclick.riskgo.risk.risk.statement", "风险申诉接口", "1.0"),
-    COMPLAINT_INQUIRY("com.zanclick.riskgo.risk.complaint.inquiry", "风险申诉查询接口", "1.0"),
-    RISK_TRADE_PUSH_NOTICE("com.zanclick.riskgo.risk.trade.push.notice", "风险推送处理通知", "1.0"),
-    RISK_CLAIM_PROCESS_NOTICE("com.zanclick.riskgo.risk.slaim.process.notice", "风险申诉处理通知", "1.0");
 
+    ESTABLISH_REDPACKET("com.zanclick.redpacket.establish.redpacket","红包创建接口","1.0"),
+    QUERY_REDPACKET("com.zanclick.redpacket.query.redpacket","红包查询接口","1.0"),
+    INVALID_REDPACKET("com.zanclick.redpacket.invalid.redpacket","红包失效接口","1.0"),
+    RECEIVE_REDPACKET("com.zanclick.redpacket.receive.redpacket","红包领取接口","1.0"),
+    ESTABLISH_REDPACKET_NOTICE("com.zanclick.redpacket.establish.redpacket.notice","红包创建通知接口","1.0"),
+    INVALID_REDPACKET_NOTICE("com.zanclick.redpacket.invalid.redpacket.notice","红包失效通知接口","1.0"),
+    RECEIVE_REDPACKET_NOTICE("com.zanclick.redpacket.receive.redpacket.notice","红包领取结果通知接口","1.0");
     public String method;
 
     public String desc;

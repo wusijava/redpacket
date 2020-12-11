@@ -154,6 +154,7 @@ public class WebRedPacketRecordController {
 
     private RedPacketRecordVo getListVo(RedPacketRecord redPacketRecord) {
         RedPacketRecordVo vo = new RedPacketRecordVo();
+        vo.setId(redPacketRecord.getId());
         vo.setCustomPhone(redPacketRecord.getCustomPhone());
         vo.setStateDesc(redPacketRecord.getStateDesc());
         vo.setAmount(redPacketRecord.getAmount());

@@ -1,6 +1,7 @@
 package com.zanclick.redpacket.core.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zanclick.redpacket.api.notify.AsyncNotifySender;
 import com.zanclick.redpacket.common.entity.ExcelDto;
 import com.zanclick.redpacket.common.entity.Response;
 import com.zanclick.redpacket.common.jms.SendMessage;
@@ -10,16 +11,22 @@ import com.zanclick.redpacket.common.utils.DataUtils;
 import com.zanclick.redpacket.common.utils.DateUtils;
 import com.zanclick.redpacket.common.utils.LoginContext;
 import com.zanclick.redpacket.common.utils.PoiUtil;
+import com.zanclick.redpacket.configuration.entity.App;
+import com.zanclick.redpacket.configuration.service.AppService;
+import com.zanclick.redpacket.core.dto.CreateRedPacketNoticeDto;
 import com.zanclick.redpacket.core.entity.FileExport;
 import com.zanclick.redpacket.core.entity.RedPacket;
 import com.zanclick.redpacket.core.query.FileExportQuery;
 import com.zanclick.redpacket.core.query.RedPacketQuery;
 import com.zanclick.redpacket.core.service.FileExportService;
+import com.zanclick.redpacket.core.service.RedPacketRecordService;
 import com.zanclick.redpacket.core.service.RedPacketService;
 import com.zanclick.redpacket.core.vo.RedPacketVo;
+import com.zanclick.redpacket.sdk.enums.ApiMethod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +55,9 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = "/api/web/redPacket")
 public class WebRedPacketController {
 
+
+    @Autowired
+    private AppService appService;
     @Value("${serverPath}")
     private String serverPath;
     @Autowired
@@ -55,6 +65,11 @@ public class WebRedPacketController {
 
     @Autowired
     private FileExportService fileExportService;
+    @Autowired
+    private RedPacketRecordService redPacketRecordService;
+
+    @Autowired
+    private AsyncNotifySender asyncNotifySender;
 
     /**
      * 红包列表
@@ -89,6 +104,7 @@ public class WebRedPacketController {
     }
     private RedPacketVo getListVo(RedPacket redPacket) {
         RedPacketVo vo = new RedPacketVo();
+        vo.setId(redPacket.getId());
         vo.setBrwOrdNo(redPacket.getBrwOrdNo());
         vo.setTypeDesc(redPacket.getTypeDesc());
         vo.setAmount(redPacket.getAmount());
@@ -182,6 +198,51 @@ public class WebRedPacketController {
         PoiUtil.batchExport(dto.getHeaders(), dto.getKeys(), dto.getObjectList(), filename);
     }
 
+
+    @ApiOperation(value = "酬金列表全部打款")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
+    })
+    @RequestMapping(value = "allSettleByWait", method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> allSettleByWait(RedPacketQuery query) {
+        query.setState(RedPacket.State.WAITING.getCode());
+        query.setType(RedPacket.Type.LX.getCode());
+        List<RedPacket> redPacketList = redPacketService.queryList(query);
+        if (DataUtils.isEmpty(redPacketList)) {
+            return Response.fail("没有需要打款的酬金");
+        }
+        try {
+            redPacketRecordService.allSettle(redPacketList);
+        } catch (Exception e) {
+            log.error("酬金列表全部打款异常:{}", e);
+            return Response.fail("酬金列表全部打款异常");
+        }
+        return Response.ok("酬金正在进行打款中");
+    }
+
+    @ApiOperation(value = "酬金列表全部打款")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
+    })
+    @RequestMapping(value = "allSettleByFail", method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> allSettleByFail(RedPacketQuery query) {
+        query.setState(RedPacket.State.FAIL.getCode());
+        query.setType(RedPacket.Type.LX.getCode());
+        List<RedPacket> redPacketList = redPacketService.queryList(query);
+        if (DataUtils.isEmpty(redPacketList)) {
+            return Response.fail("没有需要打款的酬金");
+        }
+        try {
+            redPacketRecordService.allSettle(redPacketList);
+        } catch (Exception e) {
+            log.error("酬金列表全部打款异常:{}", e);
+            return Response.fail("酬金列表全部打款异常");
+        }
+        return Response.ok("酬金正在进行打款中");
+    }
+
     @ApiOperation(value = "酬金列表打款")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
@@ -230,5 +291,81 @@ public class WebRedPacketController {
         object.put("brwOrdNo", brwOrdNo);
         SendMessage.sendMessage(RedPacketContents.REDPACKET_SETTLE_MESSAGE, object.toString());
     }
+
+    @ApiOperation(value = "红包创建结果通知")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
+    })
+    @RequestMapping(value = "createRedPacketNotice", method = RequestMethod.POST)
+    @ResponseBody
+    public Response createRedPacketNotice(Long id){
+        if(DataUtils.isEmpty(id)){
+            return Response.fail("id为空");
+        }
+        CreateRedPacketNoticeDto dto = new CreateRedPacketNoticeDto();
+        RedPacket redPacket = redPacketService.queryById(id);
+        App app = appService.queryByAppId(redPacket.getAppId());
+        if(DataUtils.isNotEmpty(app.getPushCreateResultUrl())){
+            dto.setAmount(redPacket.getAmount());
+            dto.setOutTradeNo(redPacket.getOutTradeNo());
+            dto.setPacketNo(redPacket.getPacketNo());
+            dto.setStateDesc(redPacket.getStateDesc());
+            //todo 地址错误
+            asyncNotifySender.sendMessage(ApiMethod.ESTABLISH_REDPACKET_NOTICE,dto.toString(),app.getPushCreateResultUrl(),app.getAppId());
+            return Response.ok("通知成功");
+        }
+        return Response.fail("通知失败，未发生消息至业务系统");
+    }
+
+    @ApiOperation(value = "红包失效结果通知")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
+    })
+    @RequestMapping(value = "invalidRedPacketNotice", method = RequestMethod.POST)
+    @ResponseBody
+    public Response invalidRedPacketNotice(Long id){
+        if(DataUtils.isEmpty(id)){
+            return Response.fail("id为空");
+        }
+        CreateRedPacketNoticeDto dto = new CreateRedPacketNoticeDto();
+        RedPacket redPacket = redPacketService.queryById(id);
+        App app = appService.queryByAppId(redPacket.getAppId());
+        if(DataUtils.isNotEmpty(app.getPushCancleResultUrl())){
+            dto.setAmount(redPacket.getAmount());
+            dto.setOutTradeNo(redPacket.getOutTradeNo());
+            dto.setPacketNo(redPacket.getPacketNo());
+            dto.setStateDesc(redPacket.getStateDesc());
+            //todo 地址错误
+            asyncNotifySender.sendMessage(ApiMethod.INVALID_REDPACKET_NOTICE,dto.toString(),app.getPushCancleResultUrl(),app.getAppId());
+            return Response.ok("通知成功");
+        }
+        return Response.fail("通知失败，未发生消息至业务系统");
+    }
+
+    @ApiOperation(value = "红包领取结果通知")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
+    })
+    @RequestMapping(value = "receiveRedPacketNotice", method = RequestMethod.POST)
+    @ResponseBody
+    public Response receiveRedPacketNotice(Long id){
+        if(DataUtils.isEmpty(id)){
+            return Response.fail("id为空");
+        }
+        CreateRedPacketNoticeDto dto = new CreateRedPacketNoticeDto();
+        RedPacket redPacket = redPacketService.queryById(id);
+        App app = appService.queryByAppId(redPacket.getAppId());
+        if(DataUtils.isNotEmpty(app.getPushGetResultUrl())){
+            dto.setAmount(redPacket.getAmount());
+            dto.setOutTradeNo(redPacket.getOutTradeNo());
+            dto.setPacketNo(redPacket.getPacketNo());
+            dto.setStateDesc(redPacket.getStateDesc());
+            //todo 地址错误
+            asyncNotifySender.sendMessage(ApiMethod.RECEIVE_REDPACKET_NOTICE,dto.toString(),app.getPushGetResultUrl(),app.getAppId());
+            return Response.ok("通知成功");
+        }
+        return Response.fail("通知失败，未发生消息至业务系统");
+    }
+
 
 }

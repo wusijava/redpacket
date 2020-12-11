@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zanclick.redpacket.common.base.dao.mybatis.BaseMapper;
 import com.zanclick.redpacket.common.base.service.impl.BaseMybatisServiceImpl;
 import com.zanclick.redpacket.common.utils.DataUtils;
+import com.zanclick.redpacket.common.utils.DateUtil;
 import com.zanclick.redpacket.common.utils.DateUtils;
 import com.zanclick.redpacket.common.utils.StringUtils;
 import com.zanclick.redpacket.core.dto.DataList;
@@ -21,8 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author admin
@@ -62,6 +68,84 @@ public class RedPacketRecordServiceImpl extends BaseMybatisServiceImpl<RedPacket
     public RedPacketRecord findByOutTradeNo(String outTradeNo) {
         return redPacketRecordMapper.findByOutTradeNo(outTradeNo);
     }
+    @Override
+    public void allSettle(List<RedPacket> list) {
+        try {
+            //线程数自定义
+            int threadNum = 5;
+            //给每个线程分发处理条数(总条数/线程数);
+            int threadSize = list.size() / threadNum;
+            //创建线程池
+            ExecutorService eService = Executors.newFixedThreadPool(threadNum);
+            List<Callable<String>> cList = new ArrayList<>();
+            Callable<String> task = null;
+            List<RedPacket> sList = null;
+            for (int i = 0; i < threadNum; i++) {
+                if (i == threadNum - 1) {
+                    sList = list.subList(i * threadSize, list.size());
+                } else {
+                    sList = list.subList(i * threadSize, (i + 1) * threadSize);
+                }
+                final List<RedPacket> nowList = sList;
+                task = new Callable<String>() {
+                    @Override
+                    public String call() {
+                        Integer successCount = 0;
+                        Integer failCount = 0;
+                        BigDecimal money = new BigDecimal("0.00");
+                        if (DataUtils.isNotEmpty(nowList)) {
+                            for (RedPacket redPacket : nowList) {
+                                // 调用业务方法
+                                log.error("开始进行酬金打款,brwOrdNo:{},amount:{}", redPacket.getBrwOrdNo(), redPacket.getAmount());
+                                Boolean result = settle(redPacket);
+                                if (true) {
+                                    successCount++;
+                                    money = money.add(new BigDecimal(redPacket.getAmount()));
+                                } else {
+                                    failCount++;
+                                }
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        return new StringBuilder().append(successCount).append("|").append(failCount).append("|").append(money).toString();
+                    }
+                };
+
+                cList.add(task);
+            }
+            try {
+                List<Future<String>> futures = eService.invokeAll(cList);
+                Integer successCount = 0;
+                Integer failCount = 0;
+                BigDecimal money = new BigDecimal("0.00");
+                for (Future<String> future : futures) {
+                    String result = future.get();
+                    String[] split = result.split("\\|");
+                    if (split[0]!=null){
+                        successCount= successCount+Integer.valueOf(split[0]);
+                    }
+                    if (split[1]!=null) {
+                        failCount = failCount + Integer.valueOf(split[1]);
+                    }
+                    if (split[2]!=null) {
+                        money = money.add(new BigDecimal(split[2]));
+                    }
+                }
+                log.error(DateUtil.getNowDate() + "批量酬金打款结束，共计打款{}笔，金额{}元，失败{}笔", successCount, money.toString(), failCount);
+            } catch (InterruptedException e) {
+                log.error("全部打款异常:{}", e);
+            }
+            eService.shutdown();
+        } catch (Exception e) {
+            log.error("全部打款异常:{}", e);
+        }
+    }
+
+
     @Override
     public Boolean settle(RedPacket redPacket) {
         if (DataUtils.isEmpty(redPacket)) {
