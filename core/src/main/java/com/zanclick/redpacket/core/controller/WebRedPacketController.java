@@ -104,6 +104,7 @@ public class WebRedPacketController {
     }
     private RedPacketVo getListVo(RedPacket redPacket) {
         RedPacketVo vo = new RedPacketVo();
+        vo.setId(redPacket.getId());
         vo.setBrwOrdNo(redPacket.getBrwOrdNo());
         vo.setTypeDesc(redPacket.getTypeDesc());
         vo.setAmount(redPacket.getAmount());
@@ -304,13 +305,13 @@ public class WebRedPacketController {
         CreateRedPacketNoticeDto dto = new CreateRedPacketNoticeDto();
         RedPacket redPacket = redPacketService.queryById(id);
         App app = appService.queryByAppId(redPacket.getAppId());
-        if(DataUtils.isNotEmpty(app.getPushRiskUrl())){
+        if(DataUtils.isNotEmpty(app.getPushCreateResultUrl())){
             dto.setAmount(redPacket.getAmount());
             dto.setOutTradeNo(redPacket.getOutTradeNo());
             dto.setPacketNo(redPacket.getPacketNo());
             dto.setStateDesc(redPacket.getStateDesc());
             //todo 地址错误
-            asyncNotifySender.sendMessage(ApiMethod.RECEIVE_REDPACKET_NOTICE,dto.toString(),app.getPushRiskUrl(),app.getAppId());
+            asyncNotifySender.sendMessage(ApiMethod.ESTABLISH_REDPACKET_NOTICE,dto.toString(),app.getPushCreateResultUrl(),app.getAppId());
             return Response.ok("通知成功");
         }
         return Response.fail("通知失败，未发生消息至业务系统");
@@ -329,13 +330,13 @@ public class WebRedPacketController {
         CreateRedPacketNoticeDto dto = new CreateRedPacketNoticeDto();
         RedPacket redPacket = redPacketService.queryById(id);
         App app = appService.queryByAppId(redPacket.getAppId());
-        if(DataUtils.isNotEmpty(app.getPushRiskUrl())){
+        if(DataUtils.isNotEmpty(app.getPushCancleResultUrl())){
             dto.setAmount(redPacket.getAmount());
             dto.setOutTradeNo(redPacket.getOutTradeNo());
             dto.setPacketNo(redPacket.getPacketNo());
             dto.setStateDesc(redPacket.getStateDesc());
             //todo 地址错误
-            asyncNotifySender.sendMessage(ApiMethod.RECEIVE_REDPACKET_NOTICE,dto.toString(),app.getTransactionQueryUrl(),app.getAppId());
+            asyncNotifySender.sendMessage(ApiMethod.INVALID_REDPACKET_NOTICE,dto.toString(),app.getPushCancleResultUrl(),app.getAppId());
             return Response.ok("通知成功");
         }
         return Response.fail("通知失败，未发生消息至业务系统");
@@ -354,13 +355,13 @@ public class WebRedPacketController {
         CreateRedPacketNoticeDto dto = new CreateRedPacketNoticeDto();
         RedPacket redPacket = redPacketService.queryById(id);
         App app = appService.queryByAppId(redPacket.getAppId());
-        if(DataUtils.isNotEmpty(app.getPushRiskUrl())){
+        if(DataUtils.isNotEmpty(app.getPushGetResultUrl())){
             dto.setAmount(redPacket.getAmount());
             dto.setOutTradeNo(redPacket.getOutTradeNo());
             dto.setPacketNo(redPacket.getPacketNo());
             dto.setStateDesc(redPacket.getStateDesc());
             //todo 地址错误
-            asyncNotifySender.sendMessage(ApiMethod.RECEIVE_REDPACKET_NOTICE,dto.toString(),app.getMerchantQueryUrl(),app.getAppId());
+            asyncNotifySender.sendMessage(ApiMethod.RECEIVE_REDPACKET_NOTICE,dto.toString(),app.getPushGetResultUrl(),app.getAppId());
             return Response.ok("通知成功");
         }
         return Response.fail("通知失败，未发生消息至业务系统");

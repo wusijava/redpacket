@@ -15,9 +15,6 @@ public class App implements Identifiable<Long> {
 
     private Long id;
 
-    private String pid;
-
-    private String smid;
     /**
      * 应用ID
      */
@@ -65,23 +62,19 @@ public class App implements Identifiable<Long> {
     private Integer ipControl;
 
     /**
-     * 推送风险地址
+     * 推送红包创建结果地址
      */
-    private String pushRiskUrl;
-    /**
-     * 推送风控申诉消息地址
-     */
-    private String pushRepresenUrl;
+    private String pushCreateResultUrl;
 
     /**
-     * 商户信息查询地址
+     * 推送红包取消通知地址
      */
-    private String merchantQueryUrl;
+    private String pushCancleResultUrl;
 
     /**
-     * 交易信息查询地址
+     * 红包领取结果通知
      */
-    private String transactionQueryUrl;
+    private String pushGetResultUrl;
     /**
      * //校验时间
      */

@@ -3,8 +3,6 @@
 <mapper namespace="com.zanclick.redpacket.configuration.mapper.AppMapper">
     <resultMap id="BaseResultMap" type="com.zanclick.redpacket.configuration.entity.App">
             <id column="id" property="id" jdbcType="BIGINT"/>
-            <result column="pid" property="pid" jdbcType="VARCHAR"/>
-            <result column="smid" property="smid" jdbcType="VARCHAR"/>
             <result column="app_id" property="appId" jdbcType="VARCHAR"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
             <result column="name" property="name" jdbcType="VARCHAR"/>
@@ -14,18 +12,15 @@
             <result column="app_private_key" property="appPrivateKey" jdbcType="VARCHAR"/>
             <result column="check_sign" property="checkSign" jdbcType="INTEGER"/>
             <result column="ip_control" property="ipControl" jdbcType="INTEGER"/>
-            <result column="push_risk_url" property="pushRiskUrl" jdbcType="VARCHAR"/>
-            <result column="push_represen_url" property="pushRepresenUrl" jdbcType="VARCHAR"/>
-            <result column="merchant_query_url" property="merchantQueryUrl" jdbcType="VARCHAR"/>
-            <result column="transaction_query_url" property="transactionQueryUrl" jdbcType="VARCHAR"/>
+            <result column="push_create_result_url" property="pushCreateResultUrl" jdbcType="VARCHAR"/>
+            <result column="push_cancle_result_url" property="pushCancleResultUrl" jdbcType="VARCHAR"/>
+            <result column="push_get_result_url" property="pushGetResultUrl" jdbcType="VARCHAR"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="table">app</sql>
     <sql id="Base_Column_List">
             `id`,
-            `pid`,
-            `smid`,
             `app_id`,
             `state`,
             `name`,
@@ -35,10 +30,9 @@
             `app_private_key`,
             `check_sign`,
             `ip_control`,
-            `push_risk_url`,
-            `push_represen_url`,
-            `merchant_query_url`,
-            `transaction_query_url`,
+            `push_create_result_url`,
+            `push_cancle_result_url`,
+            `push_get_result_url`,
             `create_time`
     </sql>
     <sql id="Base_Where_Clause">
@@ -46,12 +40,6 @@
             <trim prefixOverrides="and">
                     <if test="id != null">
                         AND `id`=#{id}
-                    </if>
-                    <if test="pid != null and pid != ''">
-                        AND `pid`=#{pid}
-                    </if>
-                    <if test="smid != null and smid != ''">
-                        AND `smid`=#{smid}
                     </if>
                     <if test="appId != null and appId != ''">
                         AND `app_id`=#{appId}
@@ -80,17 +68,14 @@
                     <if test="ipControl != null">
                         AND `ip_control`=#{ipControl}
                     </if>
-                    <if test="pushRiskUrl != null and pushRiskUrl != ''">
-                        AND `push_risk_url`=#{pushRiskUrl}
+                    <if test="pushCreateResultUrl != null and pushCreateResultUrl != ''">
+                        AND `push_create_result_url`=#{pushCreateResultUrl}
                     </if>
-                    <if test="pushRepresenUrl != null and pushRepresenUrl != ''">
-                        AND `push_represen_url`=#{pushRepresenUrl}
+                    <if test="pushCancleResultUrl != null and pushCancleResultUrl != ''">
+                        AND `push_cancle_result_url`=#{pushCancleResultUrl}
                     </if>
-                    <if test="merchantQueryUrl != null and merchantQueryUrl != ''">
-                        AND `merchant_query_url`=#{merchantQueryUrl}
-                    </if>
-                    <if test="transactionQueryUrl != null and transactionQueryUrl != ''">
-                        AND `transaction_query_url`=#{transactionQueryUrl}
+                    <if test="pushGetResultUrl != null and pushGetResultUrl != ''">
+                        AND `push_get_result_url`=#{pushGetResultUrl}
                     </if>
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
@@ -137,8 +122,6 @@
         <include refid="table"/>
         (
             `id`,
-            `pid`,
-            `smid`,
             `app_id`,
             `state`,
             `name`,
@@ -148,16 +131,13 @@
             `app_private_key`,
             `check_sign`,
             `ip_control`,
-            `push_risk_url`,
-            `push_represen_url`,
-            `merchant_query_url`,
-            `transaction_query_url`,
+            `push_create_result_url`,
+            `push_cancle_result_url`,
+            `push_get_result_url`,
             `create_time`
         )
         VALUES(
             #{id},
-            #{pid},
-            #{smid},
             #{appId},
             #{state},
             #{name},
@@ -167,10 +147,9 @@
             #{appPrivateKey},
             #{checkSign},
             #{ipControl},
-            #{pushRiskUrl},
-            #{pushRepresenUrl},
-            #{merchantQueryUrl},
-            #{transactionQueryUrl},
+            #{pushCreateResultUrl},
+            #{pushCancleResultUrl},
+            #{pushGetResultUrl},
             #{createTime}
         )
     </insert>
@@ -180,8 +159,6 @@
         <include refid="table"/>
         (
             `id`,
-            `pid`,
-            `smid`,
             `app_id`,
             `state`,
             `name`,
@@ -191,18 +168,15 @@
             `app_private_key`,
             `check_sign`,
             `ip_control`,
-            `push_risk_url`,
-            `push_represen_url`,
-            `merchant_query_url`,
-            `transaction_query_url`,
+            `push_create_result_url`,
+            `push_cancle_result_url`,
+            `push_get_result_url`,
             `create_time`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
             (
             #{cm.id},
-            #{cm.pid},
-            #{cm.smid},
             #{cm.appId},
             #{cm.state},
             #{cm.name},
@@ -212,10 +186,9 @@
             #{cm.appPrivateKey},
             #{cm.checkSign},
             #{cm.ipControl},
-            #{cm.pushRiskUrl},
-            #{cm.pushRepresenUrl},
-            #{cm.merchantQueryUrl},
-            #{cm.transactionQueryUrl},
+            #{cm.pushCreateResultUrl},
+            #{cm.pushCancleResultUrl},
+            #{cm.pushGetResultUrl},
             #{cm.createTime}
             )
         </foreach>
@@ -228,24 +201,11 @@
         <include refid="table"/>
         WHERE id=#{id}
     </select>
-    <select id="queryByAppId" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM
-        <include refid="table"/>
-        WHERE app_id=#{appId}
-    </select>
 
     <update id="updateById" parameterType="com.zanclick.redpacket.configuration.entity.App">
         UPDATE
         <include refid="table"/>
         <set>
-            <if test="pid != null and pid != ''">
-                 `pid`=#{pid},
-            </if>
-            <if test="smid != null and smid != ''">
-                 `smid`=#{smid},
-            </if>
             <if test="appId != null and appId != ''">
                  `app_id`=#{appId},
             </if>
@@ -273,17 +233,14 @@
             <if test="ipControl != null">
                  `ip_control`=#{ipControl},
             </if>
-            <if test="pushRiskUrl != null and pushRiskUrl != ''">
-                 `push_risk_url`=#{pushRiskUrl},
+            <if test="pushCreateResultUrl != null and pushCreateResultUrl != ''">
+                 `push_create_result_url`=#{pushCreateResultUrl},
             </if>
-            <if test="pushRepresenUrl != null and pushRepresenUrl != ''">
-                 `push_represen_url`=#{pushRepresenUrl},
+            <if test="pushCancleResultUrl != null and pushCancleResultUrl != ''">
+                 `push_cancle_result_url`=#{pushCancleResultUrl},
             </if>
-            <if test="merchantQueryUrl != null and merchantQueryUrl != ''">
-                 `merchant_query_url`=#{merchantQueryUrl},
-            </if>
-            <if test="transactionQueryUrl != null and transactionQueryUrl != ''">
-                 `transaction_query_url`=#{transactionQueryUrl},
+            <if test="pushGetResultUrl != null and pushGetResultUrl != ''">
+                 `push_get_result_url`=#{pushGetResultUrl},
             </if>
             <if test="createTime != null">
                  `create_time`=#{createTime},
